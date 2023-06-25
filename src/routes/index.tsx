@@ -5,8 +5,8 @@ import Devices from "../pages/Devices";
 import Orders from "../pages/Orders";
 import Snacks from "../pages/Snacks";
 import Sessions from "../pages/Sessions";
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
+import Login from "../pages/Auth/pages/Login";
+import Register from "../pages/Auth/pages/Register";
 
 const router = createBrowserRouter([
   {
