@@ -1,5 +1,11 @@
 import {Stack, Box, Container, Typography, Divider} from "@mui/material";
-import {Phone, Facebook, Twitter, LocationOn} from "@mui/icons-material";
+import {
+  Phone,
+  Facebook,
+  Twitter,
+  LocationOn,
+  Instagram,
+} from "@mui/icons-material";
 
 export default function Footer() {
   return (
@@ -15,6 +21,16 @@ export default function Footer() {
           <Typography variant="h2" sx={{fontSize: "23px", fontWeight: "900"}}>
             <span style={{color: "#00bfff"}}>PSC</span> Management
           </Typography>
+          {/* SOCIAL */}
+          <Stack direction="row" spacing={2}>
+            <Facebook
+              sx={{color: "#3b5998", fontSize: 30, cursor: "pointer"}}
+            />
+            <Twitter sx={{color: "#1da1f2", fontSize: 30, cursor: "pointer"}} />
+            <Instagram
+              sx={{color: "#c32aa3", fontSize: 30, cursor: "pointer"}}
+            />
+          </Stack>
           <Typography textAlign={"center"} color={"GrayText"}>
             This PlayStation Center Management System is designed to efficiently
             manage devices, snacks orders, and gaming sessions. With this
@@ -24,14 +40,6 @@ export default function Footer() {
             gaming experience for your customers. Explore our innovative
             management solution today.
           </Typography>
-
-          {/* SOCIAL */}
-          <Stack direction="row" spacing={2}>
-            <Facebook
-              sx={{color: "#3b5998", fontSize: 30, cursor: "pointer"}}
-            />
-            <Twitter sx={{color: "#1da1f2", fontSize: 30, cursor: "pointer"}} />
-          </Stack>
 
           {/* LOCATION & PHONE */}
           <Stack
