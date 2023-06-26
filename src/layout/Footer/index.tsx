@@ -6,6 +6,7 @@ import {
   LocationOn,
   Instagram,
 } from "@mui/icons-material";
+import LogoText from "./LogoText";
 
 export default function Footer() {
   return (
@@ -18,9 +19,7 @@ export default function Footer() {
           justifyContent={"center"}
         >
           {/* PSC_INFO */}
-          <Typography variant="h2" sx={{fontSize: "23px", fontWeight: "900"}}>
-            <span style={{color: "#00bfff"}}>PSC</span> Management
-          </Typography>
+          <LogoText />
           {/* SOCIAL */}
           <Stack direction="row" spacing={2}>
             <Facebook

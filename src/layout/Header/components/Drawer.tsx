@@ -1,5 +1,6 @@
-import {Box, Typography, Divider} from "@mui/material";
+import {Box, Divider} from "@mui/material";
 import SidebarList from "../../Sidebar/components/SidebarList";
+import LogoText from "../../Footer/LogoText";
 
 interface DrawerProps {
   handleDrawerToggle: () => void;
@@ -7,9 +8,7 @@ interface DrawerProps {
 export default function Drawer({handleDrawerToggle}: DrawerProps) {
   return (
     <Box onClick={handleDrawerToggle} sx={{textAlign: "center"}}>
-      <Typography variant="h6" sx={{my: 2}}>
-        PSC Management
-      </Typography>
+      <LogoText my={2} />
       <Divider />
       <SidebarList />
     </Box>
