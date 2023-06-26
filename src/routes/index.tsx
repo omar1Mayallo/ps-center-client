@@ -7,6 +7,7 @@ import Snacks from "../pages/Snacks";
 import Sessions from "../pages/Sessions";
 import Login from "../pages/Auth/pages/Login";
 import Register from "../pages/Auth/pages/Register";
+import Users from "../pages/Users";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       {path: "orders", element: <Orders />},
       {path: "snacks", element: <Snacks />},
       {path: "sessions", element: <Sessions />},
+      {path: "users", element: <Users />},
       {path: "login", element: <Login />},
       {path: "register", element: <Register />},
     ],

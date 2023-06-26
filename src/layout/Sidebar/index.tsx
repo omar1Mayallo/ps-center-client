@@ -1,7 +1,10 @@
+import {Paper} from "@mui/material";
+import SidebarList from "./components/SidebarList";
+
 export default function Sidebar() {
   return (
-    <aside>
-      <h1>Sidebar</h1>
-    </aside>
+    <Paper component={"aside"} variant="outlined" square>
+      <SidebarList />
+    </Paper>
   );
 }

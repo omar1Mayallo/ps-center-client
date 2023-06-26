@@ -14,11 +14,11 @@ export default function Layout() {
       <Header />
       <Container maxWidth="xl">
         {isLargeScreen ? (
-          <Grid container spacing={2}>
-            <Grid item lg={2}>
+          <Grid container spacing={2} py={3}>
+            <Grid item lg={2} md={3}>
               <Sidebar />
             </Grid>
-            <Grid item lg={10}>
+            <Grid item lg={10} md={9}>
               <main>
                 <Outlet />
               </main>

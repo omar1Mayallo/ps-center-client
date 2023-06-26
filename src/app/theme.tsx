@@ -10,7 +10,7 @@ interface ColorModeState {
   mode: "dark" | "light";
   toggleColorMode: () => void;
 }
-const useColorModeStore = create<ColorModeState>((set) => ({
+export const useColorModeStore = create<ColorModeState>((set) => ({
   mode: "light",
   toggleColorMode: () => {
     set((state) => ({
