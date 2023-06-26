@@ -8,6 +8,7 @@ import {
   Theme,
   Toolbar,
   useMediaQuery,
+  Container,
 } from "@mui/material";
 import {useState} from "react";
 import {Link} from "react-router-dom";
@@ -30,58 +31,60 @@ export default function Header() {
     <Box component={"header"} sx={{flexGrow: 1}}>
       {/* TOP_NAV */}
       <AppBar component={"nav"} position="static" color="transparent">
-        <Toolbar>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"space-between"}
-            width={"100%"}
-            spacing={2}
-          >
-            <Box sx={{display: "flex", alignItems: "center"}}>
-              {/* MENU_ICON */}
-              <>
-                {isLargeScreen || (
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{mr: 2}}
-                    onClick={handleDrawerToggle}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                )}
-              </>
+        <Container maxWidth="xl">
+          <Toolbar>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent={"space-between"}
+              width={"100%"}
+              spacing={2}
+            >
+              <Box sx={{display: "flex", alignItems: "center"}}>
+                {/* MENU_ICON */}
+                <>
+                  {isLargeScreen || (
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="menu"
+                      sx={{mr: 2}}
+                      onClick={handleDrawerToggle}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                  )}
+                </>
 
-              {/* LOGO */}
-              <Link
-                to={"/"}
-                style={{
-                  display: "flex",
-                  justifyItems: "center",
-                  margin: "3px 0",
-                }}
-              >
-                <Box
-                  component={"img"}
-                  src="/gamepad-icon.svg"
-                  alt="logo"
-                  width={55}
-                  height={55}
-                />
-              </Link>
-            </Box>
+                {/* LOGO */}
+                <Link
+                  to={"/"}
+                  style={{
+                    display: "flex",
+                    justifyItems: "center",
+                    margin: "3px 0",
+                  }}
+                >
+                  <Box
+                    component={"img"}
+                    src="/gamepad-icon.svg"
+                    alt="logo"
+                    width={55}
+                    height={55}
+                  />
+                </Link>
+              </Box>
 
-            <Box sx={{display: "flex", alignItems: "center"}}>
-              {/* DARK/LIGHT_BUTTON */}
-              <DarkLightButton />
-              {/* LOGIN || USER_PROFILE */}
-              <UserOrLogin />
-            </Box>
-          </Stack>
-        </Toolbar>
+              <Box sx={{display: "flex", alignItems: "center"}}>
+                {/* DARK/LIGHT_BUTTON */}
+                <DarkLightButton />
+                {/* LOGIN || USER_PROFILE */}
+                <UserOrLogin />
+              </Box>
+            </Stack>
+          </Toolbar>
+        </Container>
       </AppBar>
       {/* DRAWER_NAV */}
       <Box component="nav">
