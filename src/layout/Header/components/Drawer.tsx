@@ -1,6 +1,6 @@
 import {Box, Divider} from "@mui/material";
 import SidebarList from "../../Sidebar/components/SidebarList";
-import LogoText from "../../Footer/LogoText";
+import LogoText from "../../../shared/components/LogoText";
 
 interface DrawerProps {
   handleDrawerToggle: () => void;

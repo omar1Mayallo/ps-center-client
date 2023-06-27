@@ -10,8 +10,23 @@ import {
   Typography,
 } from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import registerSchemaValidation from "./registerSchemaValidation";
 
 export default function Register() {
+  // LOGIN_VALIDATION&SUBMIT
+  type FormData = yup.InferType<typeof registerSchemaValidation>;
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchemaValidation),
+  });
+  const onSubmit = (data: FormData) => console.log(data);
+
   return (
     <Container component={"section"} maxWidth="xs">
       <Box
@@ -33,14 +48,14 @@ export default function Register() {
         <Box
           component="form"
           noValidate
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           sx={{mt: 1}}
         >
           {/* Form_Input_Username */}
           <TextField
-            // inputProps={{...register("username")}}
-            // error={!!errors.username}
-            // helperText={errors.username?.message}
+            inputProps={{...register("username")}}
+            error={!!errors.username}
+            helperText={errors.username?.message}
             margin="normal"
             required
             fullWidth
@@ -52,9 +67,9 @@ export default function Register() {
           />
           {/* Form_Input_Email */}
           <TextField
-            // inputProps={{...register("email")}}
-            // error={!!errors.email}
-            // helperText={errors.email?.message}
+            inputProps={{...register("email")}}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             margin="normal"
             fullWidth
             type="email"
@@ -65,27 +80,15 @@ export default function Register() {
           />
           {/* Form_Input_Password */}
           <TextField
-            // inputProps={{...register("password")}}
-            // error={!!errors.password}
-            // helperText={errors.password?.message}
+            inputProps={{...register("password")}}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             margin="normal"
             fullWidth
             type="password"
             id="password"
             label="Password"
             name="password"
-          />
-          {/* Form_Input_ConfirmPassword */}
-          <TextField
-            // inputProps={{...register("confirmPassword")}}
-            // error={!!errors.confirmPassword}
-            // helperText={errors.confirmPassword?.message}
-            margin="normal"
-            fullWidth
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            label="Confirm Password"
           />
           {/* Submit_Form_Button */}
           <Button

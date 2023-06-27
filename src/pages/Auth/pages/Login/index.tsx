@@ -11,8 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
+import loginSchemaValidation from "./loginSchemaValidation";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 export default function Login() {
+  // LOGIN_VALIDATION&SUBMIT
+  type FormData = yup.InferType<typeof loginSchemaValidation>;
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchemaValidation),
+  });
+  const onSubmit = (data: FormData) => console.log(data);
+
   return (
     <Container component={"section"} maxWidth="xs">
       <Box
@@ -34,14 +49,14 @@ export default function Login() {
         <Box
           component="form"
           noValidate
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           sx={{mt: 1}}
         >
           {/* Form_Input_Email */}
           <TextField
-            // inputProps={{...register("email")}}
-            // error={!!errors.email}
-            // helperText={errors.email?.message}
+            inputProps={{...register("email")}}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             margin="normal"
             required
             fullWidth
@@ -54,9 +69,9 @@ export default function Login() {
           />
           {/* Form_Input_Password */}
           <TextField
-            // inputProps={{...register("password")}}
-            // error={!!errors.password}
-            // helperText={errors.password?.message}
+            inputProps={{...register("password")}}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             margin="normal"
             required
             fullWidth

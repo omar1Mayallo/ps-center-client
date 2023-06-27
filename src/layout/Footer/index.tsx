@@ -6,7 +6,7 @@ import {
   LocationOn,
   Instagram,
 } from "@mui/icons-material";
-import LogoText from "./LogoText";
+import LogoText from "../../shared/components/LogoText";
 
 export default function Footer() {
   return (
