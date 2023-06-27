@@ -8,6 +8,7 @@ import Sessions from "../pages/Sessions";
 import Login from "../pages/Auth/pages/Login";
 import Register from "../pages/Auth/pages/Register";
 import Users from "../pages/Users";
+import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
   {
@@ -15,15 +16,21 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFound />,
     children: [
-      {index: true, element: <Devices />},
-      {path: "orders", element: <Orders />},
-      {path: "snacks", element: <Snacks />},
-      {path: "sessions", element: <Sessions />},
-      {path: "users", element: <Users />},
-      {path: "login", element: <Login />},
-      {path: "register", element: <Register />},
+      {
+        element: <PrivateRoutes />,
+        children: [
+          {index: true, element: <Devices />},
+          {path: "orders", element: <Orders />},
+          {path: "snacks", element: <Snacks />},
+          {path: "sessions", element: <Sessions />},
+          {path: "users", element: <Users />},
+        ],
+      },
     ],
   },
+
+  {path: "/login", element: <Login />},
+  {path: "/register", element: <Register />},
 ]);
 
 export default router;
