@@ -1,16 +1,18 @@
 import {createBrowserRouter} from "react-router-dom";
-import NotFound from "../pages/404";
 import Layout from "../layout";
-import Devices from "../pages/Devices";
-import Orders from "../pages/Orders";
-import Snacks from "../pages/Snacks";
-import Sessions from "../pages/Sessions";
+import NotFound from "../pages/404";
 import Login from "../pages/Auth/pages/Login";
 import Register from "../pages/Auth/pages/Register";
+import Devices from "../pages/Devices";
+import Orders from "../pages/Orders";
+import Sessions from "../pages/Sessions";
+import Snacks from "../pages/Snacks";
 import Users from "../pages/Users";
 import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
+  {path: "/login", element: <Login />},
+  {path: "/register", element: <Register />},
   {
     path: "/",
     element: <Layout />,
@@ -28,9 +30,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-  {path: "/login", element: <Login />},
-  {path: "/register", element: <Register />},
 ]);
 
 export default router;

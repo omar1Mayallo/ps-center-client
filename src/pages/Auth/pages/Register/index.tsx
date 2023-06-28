@@ -1,3 +1,4 @@
+import {yupResolver} from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
@@ -9,13 +10,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {Link as RouterLink} from "react-router-dom";
+import {useMutation} from "@tanstack/react-query";
+import {AxiosError} from "axios";
+import {enqueueSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
+import {Navigate, Link as RouterLink} from "react-router-dom";
 import * as yup from "yup";
+import api from "../../../../api";
+import useAuthStore from "../../../../app/store/auth";
+import {ResErrorsI} from "../Login";
 import registerSchemaValidation from "./registerSchemaValidation";
 
 export default function Register() {
+  const {user, setUser} = useAuthStore();
+
   // LOGIN_VALIDATION&SUBMIT
   type FormData = yup.InferType<typeof registerSchemaValidation>;
   const {
@@ -25,7 +33,27 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: yupResolver(registerSchemaValidation),
   });
-  const onSubmit = (data: FormData) => console.log(data);
+  const {mutate, error, isError, isLoading} = useMutation((body: FormData) =>
+    api.post("/auth/register", body).then((res) => {
+      if (res.status === 201) {
+        // Set token to cookies to expire in 10 days
+        setUser(res.data.token);
+        enqueueSnackbar("Successfully Register", {variant: "success"});
+      }
+    })
+  );
+
+  const onSubmit = (data: FormData) => {
+    mutate(data);
+  };
+
+  if (isError) {
+    const axiosError = error as AxiosError<ResErrorsI>;
+    const errMsg = axiosError?.response?.data?.message;
+    if (errMsg) enqueueSnackbar(errMsg, {variant: "error"});
+  }
+
+  if (user) return <Navigate to={"/"} />;
 
   return (
     <Container component={"section"} maxWidth="xs">
@@ -93,18 +121,15 @@ export default function Register() {
           {/* Submit_Form_Button */}
           <Button
             type="submit"
-            // loading={isMutation.loading}
-            // disabled={isMutation.loading}
-            // startIcon={
-            //   isMutation.loading && (
-            //     <CircularProgress size={15} color="inherit" />
-            //   )
-            // }
+            disabled={isLoading}
+            startIcon={
+              isLoading && <CircularProgress size={15} color="inherit" />
+            }
             variant="contained"
             sx={{mt: 3, mb: 2}}
             fullWidth
           >
-            <span>Register</span>
+            <span>{isLoading ? "Loading" : "Register"}</span>
           </Button>
 
           {/* SignIn_Link */}

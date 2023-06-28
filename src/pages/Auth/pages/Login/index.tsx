@@ -1,3 +1,4 @@
+import {yupResolver} from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
@@ -10,13 +11,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {Link as RouterLink} from "react-router-dom";
-import loginSchemaValidation from "./loginSchemaValidation";
+import {useMutation} from "@tanstack/react-query";
+import {AxiosError} from "axios";
+import {enqueueSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
+import {Navigate, Link as RouterLink} from "react-router-dom";
 import * as yup from "yup";
+import api from "../../../../api";
+import useAuthStore from "../../../../app/store/auth";
+import loginSchemaValidation from "./loginSchemaValidation";
+
+export interface ResErrorsI {
+  status: string;
+  message: string | string[];
+}
 
 export default function Login() {
+  const {user, setUser} = useAuthStore();
   // LOGIN_VALIDATION&SUBMIT
   type FormData = yup.InferType<typeof loginSchemaValidation>;
   const {
@@ -26,8 +37,27 @@ export default function Login() {
   } = useForm<FormData>({
     resolver: yupResolver(loginSchemaValidation),
   });
-  const onSubmit = (data: FormData) => console.log(data);
 
+  const {mutate, error, isError, isLoading} = useMutation((body: FormData) =>
+    api.post("/auth/login", body).then((res) => {
+      if (res.status === 200) {
+        // Set token to cookies to expire in 10 days
+        setUser(res.data.token);
+        enqueueSnackbar("Successfully Login", {variant: "success"});
+      }
+    })
+  );
+
+  const onSubmit = (data: FormData) => {
+    mutate(data);
+  };
+
+  if (isError) {
+    const axiosError = error as AxiosError<ResErrorsI>;
+    const errMsg = axiosError?.response?.data?.message;
+    if (errMsg) enqueueSnackbar(errMsg, {variant: "error"});
+  }
+  if (user) return <Navigate to="/" />;
   return (
     <Container component={"section"} maxWidth="xs">
       <Box
@@ -83,18 +113,15 @@ export default function Login() {
           {/* Submit_Form_Button */}
           <Button
             type="submit"
-            // loading={loggedStatus.loading}
-            // disabled={loggedStatus.loading}
-            // startIcon={
-            //   loggedStatus.loading && (
-            //     <CircularProgress size={15} color="inherit" />
-            //   )
-            // }
             variant="contained"
             sx={{mt: 3, mb: 2}}
             fullWidth
+            disabled={isLoading}
+            startIcon={
+              isLoading && <CircularProgress size={15} color="inherit" />
+            }
           >
-            <span>Sign In</span>
+            <span>{isLoading ? "Loading" : "Sign In"}</span>
           </Button>
 
           {/* Forgot_Password & SignIn_Link */}

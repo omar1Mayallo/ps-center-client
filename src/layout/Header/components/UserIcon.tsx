@@ -1,6 +1,7 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import {Box, IconButton, Menu, MenuItem} from "@mui/material";
 import {useState} from "react";
+import useAuthStore from "../../../app/store/auth";
 
 export default function UserIcon() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -10,6 +11,7 @@ export default function UserIcon() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const {logout} = useAuthStore();
   return (
     <Box>
       <IconButton
@@ -38,7 +40,14 @@ export default function UserIcon() {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            logout();
+          }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </Box>
   );
