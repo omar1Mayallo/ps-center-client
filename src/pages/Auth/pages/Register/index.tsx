@@ -26,6 +26,7 @@ export default function Register() {
 
   // LOGIN_VALIDATION&SUBMIT
   type FormData = yup.InferType<typeof registerSchemaValidation>;
+
   const {
     register,
     handleSubmit,
@@ -33,25 +34,29 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: yupResolver(registerSchemaValidation),
   });
-  const {mutate, error, isError, isLoading} = useMutation((body: FormData) =>
-    api.post("/auth/register", body).then((res) => {
-      if (res.status === 201) {
-        // Set token to cookies to expire in 10 days
-        setUser(res.data.token);
-        enqueueSnackbar("Successfully Register", {variant: "success"});
-      }
-    })
+  const {mutate, isLoading} = useMutation(
+    (body: FormData) =>
+      api.post("/auth/register", body).then((res) => {
+        if (res.status === 201) {
+          // Set token to cookies to expire in 10 days
+          setUser(res.data.token);
+          enqueueSnackbar("Successfully Register", {variant: "success"});
+        }
+      }),
+    {
+      onError: (error) => {
+        const axiosError = error as AxiosError<ResErrorsI>;
+        const errMsg = axiosError?.response?.data;
+        if (errMsg?.message) {
+          enqueueSnackbar(errMsg?.message, {variant: "error"});
+        }
+      },
+    }
   );
 
   const onSubmit = (data: FormData) => {
     mutate(data);
   };
-
-  if (isError) {
-    const axiosError = error as AxiosError<ResErrorsI>;
-    const errMsg = axiosError?.response?.data?.message;
-    if (errMsg) enqueueSnackbar(errMsg, {variant: "error"});
-  }
 
   if (user) return <Navigate to={"/"} />;
 

@@ -38,26 +38,32 @@ export default function Login() {
     resolver: yupResolver(loginSchemaValidation),
   });
 
-  const {mutate, error, isError, isLoading} = useMutation((body: FormData) =>
-    api.post("/auth/login", body).then((res) => {
-      if (res.status === 200) {
-        // Set token to cookies to expire in 10 days
-        setUser(res.data.token);
-        enqueueSnackbar("Successfully Login", {variant: "success"});
-      }
-    })
+  const {mutate, isLoading} = useMutation(
+    (body: FormData) =>
+      api.post("/auth/login", body).then((res) => {
+        if (res.status === 200) {
+          // Set token to cookies to expire in 10 days
+          setUser(res.data.token);
+          enqueueSnackbar("Successfully Login", {variant: "success"});
+        }
+      }),
+    {
+      onError: (error) => {
+        const axiosError = error as AxiosError<ResErrorsI>;
+        const errMsg = axiosError?.response?.data;
+        if (errMsg?.message) {
+          enqueueSnackbar(errMsg?.message, {variant: "error"});
+        }
+      },
+    }
   );
 
   const onSubmit = (data: FormData) => {
     mutate(data);
   };
 
-  if (isError) {
-    const axiosError = error as AxiosError<ResErrorsI>;
-    const errMsg = axiosError?.response?.data?.message;
-    if (errMsg) enqueueSnackbar(errMsg, {variant: "error"});
-  }
   if (user) return <Navigate to="/" />;
+
   return (
     <Container component={"section"} maxWidth="xs">
       <Box
