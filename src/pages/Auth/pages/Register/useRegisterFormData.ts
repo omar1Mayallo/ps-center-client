@@ -1,5 +1,7 @@
-import {object, string} from "yup";
+import yup, {object, string} from "yup";
+import useFormValidation from "../../../../shared/hooks/useFormValidation";
 
+// REGISTER SCHEMA OBJECT
 const registerSchemaValidation = object({
   username: string()
     .required("Username is required")
@@ -11,4 +13,11 @@ const registerSchemaValidation = object({
     .min(6, "Password minimum length 6 characters long")
     .max(25, "Password maximum length 25 characters long"),
 });
-export default registerSchemaValidation;
+
+// REGISTER SCHEMA OBJECT TYPE
+export type RegisterFormData = yup.InferType<typeof registerSchemaValidation>;
+
+// REGISTER FORM DATA HOOK
+export default function useRegisterFormData() {
+  return useFormValidation<RegisterFormData>(registerSchemaValidation);
+}

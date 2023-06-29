@@ -1,4 +1,3 @@
-import {yupResolver} from "@hookform/resolvers/yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
@@ -13,29 +12,23 @@ import {
 import {useMutation} from "@tanstack/react-query";
 import {AxiosError} from "axios";
 import {enqueueSnackbar} from "notistack";
-import {useForm} from "react-hook-form";
 import {Navigate, Link as RouterLink} from "react-router-dom";
-import * as yup from "yup";
 import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
 import {ResErrorsI} from "../Login";
-import registerSchemaValidation from "./registerSchemaValidation";
+import useRegisterFormData, {RegisterFormData} from "./useRegisterFormData";
 
 export default function Register() {
   const {user, setUser} = useAuthStore();
-
-  // LOGIN_VALIDATION&SUBMIT
-  type FormData = yup.InferType<typeof registerSchemaValidation>;
 
   const {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<FormData>({
-    resolver: yupResolver(registerSchemaValidation),
-  });
+  } = useRegisterFormData();
+
   const {mutate, isLoading} = useMutation(
-    (body: FormData) =>
+    (body: RegisterFormData) =>
       api.post("/auth/register", body).then((res) => {
         if (res.status === 201) {
           // Set token to cookies to expire in 10 days
@@ -54,7 +47,7 @@ export default function Register() {
     }
   );
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: RegisterFormData) => {
     mutate(data);
   };
 
