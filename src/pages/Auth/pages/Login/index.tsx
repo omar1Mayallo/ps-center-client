@@ -1,20 +1,10 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+import {Container, TextField} from "@mui/material";
 import {useMutation} from "@tanstack/react-query";
 import {enqueueSnackbar} from "notistack";
-import {Navigate, Link as RouterLink} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
+import AuthForm from "../../../../shared/components/AuthForm";
 import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
 import useLoginFormData, {LoginFormData} from "./useLoginFormData";
 
@@ -49,7 +39,45 @@ export default function Login() {
 
   return (
     <Container component={"section"} maxWidth="xs">
-      <Box
+      <AuthForm
+        isLoading={isLoading}
+        formHead="Sign In"
+        handleSubmit={handleSubmit(onSubmit)}
+      >
+        {/* Form_Input_Email */}
+        <TextField
+          inputProps={{...register("email")}}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          margin="normal"
+          required
+          fullWidth
+          type="email"
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+        />
+        {/* Form_Input_Password */}
+        <TextField
+          inputProps={{...register("password")}}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          margin="normal"
+          required
+          fullWidth
+          type="password"
+          id="password"
+          name="password"
+          label="Password"
+        />
+      </AuthForm>
+    </Container>
+  );
+}
+/*
+{<Box
         sx={{
           marginTop: 8,
           display: "flex",
@@ -57,21 +85,18 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        {/* Form_Header */}
         <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        {/* Form_Body */}
         <Box
           component="form"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
           sx={{mt: 1}}
         >
-          {/* Form_Input_Email */}
           <TextField
             inputProps={{...register("email")}}
             error={!!errors.email}
@@ -86,7 +111,6 @@ export default function Login() {
             autoComplete="email"
             autoFocus
           />
-          {/* Form_Input_Password */}
           <TextField
             inputProps={{...register("password")}}
             error={!!errors.password}
@@ -99,7 +123,6 @@ export default function Login() {
             name="password"
             label="Password"
           />
-          {/* Submit_Form_Button */}
           <Button
             type="submit"
             variant="contained"
@@ -113,7 +136,6 @@ export default function Login() {
             <span>{isLoading ? "Loading" : "Sign In"}</span>
           </Button>
 
-          {/* Forgot_Password & SignIn_Link */}
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
@@ -127,7 +149,5 @@ export default function Login() {
             </Grid>
           </Grid>
         </Box>
-      </Box>
-    </Container>
-  );
-}
+      </Box> }
+*/
