@@ -10,47 +10,40 @@ import {
   Typography,
 } from "@mui/material";
 import {useMutation} from "@tanstack/react-query";
-import {AxiosError} from "axios";
 import {enqueueSnackbar} from "notistack";
 import {Navigate, Link as RouterLink} from "react-router-dom";
 import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
-import {ResErrorsI} from "../Login";
+import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
 import useRegisterFormData, {RegisterFormData} from "./useRegisterFormData";
 
 export default function Register() {
-  const {user, setUser} = useAuthStore();
-
+  // FORM_VALIDATION
   const {
-    register,
+    register: registerV,
     handleSubmit,
     formState: {errors},
   } = useRegisterFormData();
 
-  const {mutate, isLoading} = useMutation(
-    (body: RegisterFormData) =>
-      api.post("/auth/register", body).then((res) => {
-        if (res.status === 201) {
-          // Set token to cookies to expire in 10 days
-          setUser(res.data.token);
-          enqueueSnackbar("Successfully Register", {variant: "success"});
-        }
-      }),
-    {
-      onError: (error) => {
-        const axiosError = error as AxiosError<ResErrorsI>;
-        const errMsg = axiosError?.response?.data;
-        if (errMsg?.message) {
-          enqueueSnackbar(errMsg?.message, {variant: "error"});
-        }
-      },
-    }
-  );
+  // USER_STORE
+  const {user, setUser} = useAuthStore();
 
+  // REGISTER_SERVICE
+  async function register(body: RegisterFormData) {
+    const res = await api.post("/auth/register", body);
+    if (res.status === 201) {
+      setUser(res.data.token);
+      enqueueSnackbar("Successfully Register", {variant: "success"});
+    }
+  }
+  const {mutate, isLoading} = useMutation(register, {
+    onError: catchAndNotifyErrors,
+  });
   const onSubmit = (data: RegisterFormData) => {
     mutate(data);
   };
 
+  // REDIRECT_TO_HOME_IF_LOGGED_IN
   if (user) return <Navigate to={"/"} />;
 
   return (
@@ -79,7 +72,7 @@ export default function Register() {
         >
           {/* Form_Input_Username */}
           <TextField
-            inputProps={{...register("username")}}
+            inputProps={{...registerV("username")}}
             error={!!errors.username}
             helperText={errors.username?.message}
             margin="normal"
@@ -93,7 +86,7 @@ export default function Register() {
           />
           {/* Form_Input_Email */}
           <TextField
-            inputProps={{...register("email")}}
+            inputProps={{...registerV("email")}}
             error={!!errors.email}
             helperText={errors.email?.message}
             margin="normal"
@@ -106,7 +99,7 @@ export default function Register() {
           />
           {/* Form_Input_Password */}
           <TextField
-            inputProps={{...register("password")}}
+            inputProps={{...registerV("password")}}
             error={!!errors.password}
             helperText={errors.password?.message}
             margin="normal"

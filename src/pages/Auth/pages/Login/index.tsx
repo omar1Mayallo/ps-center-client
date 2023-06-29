@@ -11,50 +11,40 @@ import {
   Typography,
 } from "@mui/material";
 import {useMutation} from "@tanstack/react-query";
-import {AxiosError} from "axios";
 import {enqueueSnackbar} from "notistack";
 import {Navigate, Link as RouterLink} from "react-router-dom";
 import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
+import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
 import useLoginFormData, {LoginFormData} from "./useLoginFormData";
 
-export interface ResErrorsI {
-  status: string;
-  message: string | string[];
-}
-
 export default function Login() {
-  const {user, setUser} = useAuthStore();
+  // FORM_VALIDATION
   const {
     register,
     handleSubmit,
     formState: {errors},
   } = useLoginFormData();
 
-  const {mutate, isLoading} = useMutation(
-    (body: LoginFormData) =>
-      api.post("/auth/login", body).then((res) => {
-        if (res.status === 200) {
-          // Set token to cookies to expire in 10 days
-          setUser(res.data.token);
-          enqueueSnackbar("Successfully Login", {variant: "success"});
-        }
-      }),
-    {
-      onError: (error) => {
-        const axiosError = error as AxiosError<ResErrorsI>;
-        const errMsg = axiosError?.response?.data;
-        if (errMsg?.message) {
-          enqueueSnackbar(errMsg?.message, {variant: "error"});
-        }
-      },
-    }
-  );
+  // USER_STORE
+  const {user, setUser} = useAuthStore();
 
+  // LOGIN_SERVICE
+  async function login(body: LoginFormData) {
+    const res = await api.post("/auth/login", body);
+    if (res.status === 200) {
+      setUser(res.data.token);
+      enqueueSnackbar("Successfully Login", {variant: "success"});
+    }
+  }
+  const {mutate, isLoading} = useMutation(login, {
+    onError: catchAndNotifyErrors,
+  });
   const onSubmit = (data: LoginFormData) => {
     mutate(data);
   };
 
+  // REDIRECT_TO_HOME_IF_LOGGED_IN
   if (user) return <Navigate to="/" />;
 
   return (
