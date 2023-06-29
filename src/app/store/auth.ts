@@ -10,8 +10,10 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>((set) => ({
   user: Cookies.get("token") || null,
-  setUser: (userToken: string) =>
-    set({user: Cookies.set("token", userToken, {expires: 10})}),
+  setUser: (userToken: string) => {
+    Cookies.set("token", userToken, {expires: 10});
+    set({user: Cookies.get("token")});
+  },
   logout: () => {
     enqueueSnackbar("Successfully logged out", {variant: "success"});
     Cookies.remove("token");

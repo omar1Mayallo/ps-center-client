@@ -1,7 +1,7 @@
-import {Outlet} from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
 import {Container, Grid, Theme, useMediaQuery} from "@mui/material";
+import Footer from "./Footer";
+import Header from "./Header";
+import Main from "./Main";
 import Sidebar from "./Sidebar";
 
 export default function Layout() {
@@ -19,15 +19,11 @@ export default function Layout() {
               <Sidebar />
             </Grid>
             <Grid item lg={10} md={9}>
-              <main>
-                <Outlet />
-              </main>
+              <Main />
             </Grid>
           </Grid>
         ) : (
-          <main>
-            <Outlet />
-          </main>
+          <Main />
         )}
       </Container>
       <Footer />
