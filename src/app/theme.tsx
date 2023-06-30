@@ -10,7 +10,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 export default function ThemeProvider({children}: ThemeProviderProps) {
-  const {mode} = useColorModeStore();
+  const mode = useColorModeStore((s) => s.mode);
   const theme = useMemo(
     () =>
       createTheme({

@@ -2,6 +2,7 @@ import {create} from "zustand";
 import Cookies from "js-cookie";
 import {enqueueSnackbar} from "notistack";
 import api from "../../api";
+import {useEffect} from "react";
 
 interface UserInfoI {
   _id: string;
@@ -29,7 +30,7 @@ const useAuthStore = create<AuthStore>((set) => ({
   logout: () => {
     enqueueSnackbar("Successfully logged out", {variant: "success"});
     Cookies.remove("token");
-    set({user: null});
+    set({user: null, userInfo: null});
   },
   setUserInfo: (userInfo: UserInfoI) => {
     set({userInfo});
@@ -37,14 +38,22 @@ const useAuthStore = create<AuthStore>((set) => ({
   userInfo: null,
 }));
 
-export const useLoggedUser = async () => {
+export const useLoggedUser = () => {
   const {user, setUserInfo} = useAuthStore();
-  const res = await api.get("/users/my-profile", {
-    headers: {
-      Authorization: "Bearer " + user,
-    },
-  });
-  setUserInfo(res.data.data.doc as UserInfoI);
+
+  async function getLoggedUser() {
+    const res = await api.get("/users/my-profile", {
+      headers: {
+        Authorization: "Bearer " + user,
+      },
+    });
+    setUserInfo(res.data.data.doc as UserInfoI);
+  }
+
+  useEffect(() => {
+    getLoggedUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 };
 
 export default useAuthStore;

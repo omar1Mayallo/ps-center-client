@@ -17,13 +17,14 @@ export default function Register() {
   } = useRegisterFormData();
 
   // USER_STORE
-  const {user, setUser} = useAuthStore();
+  const {user, setUser, setUserInfo} = useAuthStore();
 
   // REGISTER_SERVICE
   async function register(body: RegisterFormData) {
     const res = await api.post("/auth/register", body);
     if (res.status === 201) {
       setUser(res.data.token);
+      setUserInfo(res.data.user);
       enqueueSnackbar("Successfully Register", {variant: "success"});
     }
   }

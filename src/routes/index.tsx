@@ -8,7 +8,7 @@ import Orders from "../pages/Orders";
 import Sessions from "../pages/Sessions";
 import Snacks from "../pages/Snacks";
 import Users from "../pages/Users";
-import PrivateRoutes from "./PrivateRoutes";
+import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -19,13 +19,18 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        element: <PrivateRoutes />,
+        element: <AuthRoutes />,
         children: [
           {index: true, element: <Devices />},
-          {path: "orders", element: <Orders />},
-          {path: "snacks", element: <Snacks />},
-          {path: "sessions", element: <Sessions />},
-          {path: "users", element: <Users />},
+          {
+            element: <PrivateRoutes userRole={["ADMIN", "OWNER"]} />,
+            children: [
+              {path: "orders", element: <Orders />},
+              {path: "snacks", element: <Snacks />},
+              {path: "sessions", element: <Sessions />},
+              {path: "users", element: <Users />},
+            ],
+          },
         ],
       },
     ],

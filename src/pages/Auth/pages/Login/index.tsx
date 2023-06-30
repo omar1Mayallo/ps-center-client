@@ -17,13 +17,14 @@ export default function Login() {
   } = useLoginFormData();
 
   // USER_STORE
-  const {user, setUser} = useAuthStore();
+  const {user, setUser, setUserInfo} = useAuthStore();
 
   // LOGIN_SERVICE
   async function login(body: LoginFormData) {
     const res = await api.post("/auth/login", body);
     if (res.status === 200) {
       setUser(res.data.token);
+      setUserInfo(res.data.user);
       enqueueSnackbar("Successfully Login", {variant: "success"});
     }
   }
