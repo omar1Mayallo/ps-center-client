@@ -1,11 +1,10 @@
 import {RouterProvider} from "react-router-dom";
 import router from "../routes";
 import ThemeProvider from "./theme";
-import useAuthStore from "./store/auth";
+import {useLoggedUser} from "./store/auth";
 
 function App() {
-  const {user} = useAuthStore();
-
+  useLoggedUser();
   return (
     <>
       <ThemeProvider>

@@ -4,20 +4,7 @@ import {
   ThemeProvider as ColorThemeProvider,
 } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import {create} from "zustand";
-
-interface ColorModeState {
-  mode: "dark" | "light";
-  toggleColorMode: () => void;
-}
-export const useColorModeStore = create<ColorModeState>((set) => ({
-  mode: "light",
-  toggleColorMode: () => {
-    set((state) => ({
-      mode: state.mode === "light" ? "dark" : "light",
-    }));
-  },
-}));
+import {useColorModeStore} from "./store/theme";
 
 interface ThemeProviderProps {
   children: ReactNode;

@@ -18,7 +18,6 @@ export default function Snacks() {
     });
     return data.data.docs as SnackItemI[];
   }
-
   const {data, isLoading, isError, error} = useQuery<
     SnackItemI[],
     AxiosError<ResErrorsI>
