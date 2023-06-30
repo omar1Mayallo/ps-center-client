@@ -10,12 +10,33 @@ export interface NavItem {
   navItem: string;
   NavIcon: typeof SvgIcon;
   navUrl?: string;
+  isAuthorizedTo?: string | string[];
 }
 export const navItems: NavItem[] = [
   {navItem: "Devices", NavIcon: DevicesIcon, navUrl: "/"},
-  {navItem: "Sessions", NavIcon: SportsEsportsIcon, navUrl: "/sessions"},
-  {navItem: "Orders", NavIcon: ViewModuleIcon, navUrl: "/orders"},
-  {navItem: "Snacks", NavIcon: TapasIcon, navUrl: "/snacks"},
-  {navItem: "Users", NavIcon: PeopleAltIcon, navUrl: "/users"},
+  {
+    navItem: "Sessions",
+    NavIcon: SportsEsportsIcon,
+    navUrl: "/sessions",
+    isAuthorizedTo: ["ADMIN", "OWNER"],
+  },
+  {
+    navItem: "Orders",
+    NavIcon: ViewModuleIcon,
+    navUrl: "/orders",
+    isAuthorizedTo: ["ADMIN", "OWNER"],
+  },
+  {
+    navItem: "Snacks",
+    NavIcon: TapasIcon,
+    navUrl: "/snacks",
+    isAuthorizedTo: ["ADMIN", "OWNER"],
+  },
+  {
+    navItem: "Users",
+    NavIcon: PeopleAltIcon,
+    navUrl: "/users",
+    isAuthorizedTo: ["ADMIN", "OWNER"],
+  },
   {navItem: "Logout", NavIcon: LogoutIcon},
 ];

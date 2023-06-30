@@ -15,7 +15,7 @@ const PrivateRoutes = ({userRole}: {userRole: string | string[]}) => {
   if (userInfo) {
     const isAuthorized = Array.isArray(userRole)
       ? userRole.includes(userInfo.role)
-      : userInfo?.role === userRole;
+      : userInfo.role === userRole;
 
     if (isAuthorized) {
       return <Outlet />;
