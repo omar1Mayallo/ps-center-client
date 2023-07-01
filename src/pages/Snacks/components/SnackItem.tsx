@@ -1,4 +1,7 @@
-import {Card, CardContent, Chip, Stack, Typography} from "@mui/material";
+import {Box, Card, CardContent, Chip, Stack, Typography} from "@mui/material";
+import DateText from "../../../shared/components/DateText";
+import useUserRole from "../../../shared/hooks/useUserRole";
+import MutationMenu from "../../../shared/components/MutationMenu";
 
 export interface SnackItemI {
   buyingPrice: number;
@@ -12,17 +15,17 @@ export interface SnackItemI {
 }
 
 export default function SnackItem({...item}: SnackItemI) {
+  const {isOwner} = useUserRole();
   const {
     createdAt,
+    updatedAt,
     name,
     _id,
-    // buyingPrice,
+    buyingPrice,
     sellingPrice,
     quantityInStock,
     sold,
   } = item;
-
-  const createdDate = new Date(createdAt).toLocaleDateString("en-US");
 
   return (
     <Card elevation={2}>
@@ -32,6 +35,7 @@ export default function SnackItem({...item}: SnackItemI) {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
+          {/* NAME */}
           <Typography
             variant="h6"
             component="h2"
@@ -40,7 +44,8 @@ export default function SnackItem({...item}: SnackItemI) {
             {name.toUpperCase()}
           </Typography>
 
-          <Stack direction={"row"} spacing={0.5}>
+          {/* QTY, SOLD, MUTATION_ICON */}
+          <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
             <Chip
               label={
                 quantityInStock > 0 ? `Qty: ${quantityInStock}` : "Sold Out"
@@ -49,26 +54,39 @@ export default function SnackItem({...item}: SnackItemI) {
               size="small"
             />
             <Chip label={`Sold: ${sold}`} color={"success"} size="small" />
+            {isOwner && <MutationMenu />}
           </Stack>
         </Stack>
 
+        {/* ID */}
         <Typography variant="body2" color="text.secondary">
           ID: {_id}
         </Typography>
 
+        {/* PRICE */}
         <Stack
           direction={"row"}
           alignContent={"center"}
           justifyContent={"space-between"}
         >
-          <Chip label={`${sellingPrice} $`} color={"secondary"} size="small" />
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{textAlign: "end", fontSize: "11px"}}
-          >
-            Created At: {createdDate}
-          </Typography>
+          <Box display={"flex"} flexDirection={"column"} gap={0.5}>
+            {isOwner && (
+              <Chip
+                label={`Buy Price: ${buyingPrice} $`}
+                color={"warning"}
+                size="small"
+              />
+            )}
+            <Chip
+              label={`Sell Price: ${sellingPrice} $`}
+              color={"secondary"}
+              size="small"
+            />
+          </Box>
+          <Box display={"flex"} flexDirection={"column"} justifyContent={"end"}>
+            <DateText date={createdAt} preText="Created at:" />
+            <DateText date={updatedAt} preText="Updated at:" />
+          </Box>
         </Stack>
       </CardContent>
     </Card>

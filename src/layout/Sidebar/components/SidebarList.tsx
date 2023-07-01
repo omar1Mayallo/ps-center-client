@@ -16,7 +16,7 @@ function SideListSkeleton() {
 }
 
 export default function SidebarList() {
-  const userRole = useUserRole();
+  const {userRole} = useUserRole();
   const CheckAuthorization = (isAuthorizedTo: string | string[]) => {
     if (userRole) {
       // if arr
