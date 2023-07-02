@@ -1,10 +1,21 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {Box, IconButton, Menu, MenuItem, useTheme} from "@mui/material";
-import React from "react";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
+  useTheme,
+} from "@mui/material";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {enqueueSnackbar} from "notistack";
+import React from "react";
+import useSnacksServices from "../../../pages/Snacks/services";
+import catchAndNotifyErrors from "../../helpers/catchAndNotifyErrors";
 
-export default function MutationMenu() {
+export default function MutationMenu({id}: {id: string}) {
   const theme = useTheme();
   // TOGGLE_MENU_HANDLER
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -14,18 +25,39 @@ export default function MutationMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  // DELETE_SNACK_HANDLER
+  const {deleteSnack} = useSnacksServices();
+  const queryClient = useQueryClient();
+  const {mutate, isLoading} = useMutation({
+    mutationFn: (id: string) => deleteSnack(id),
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({queryKey: ["snacks"]});
+    },
+    onError: catchAndNotifyErrors,
+  });
+
+  // TODO
+  // EDIT_SNACK_HANDLER
+
   return (
     <Box>
-      <IconButton
-        size="small"
-        aria-label="account of current user"
-        aria-controls="menu-appbar"
-        aria-haspopup="true"
-        onClick={handleMenu}
-        color="inherit"
-      >
-        <MoreVertIcon />
-      </IconButton>
+      {isLoading ? (
+        <CircularProgress size={25} />
+      ) : (
+        <IconButton
+          size="small"
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleMenu}
+          color="inherit"
+        >
+          <MoreVertIcon />
+        </IconButton>
+      )}
+
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
@@ -41,12 +73,18 @@ export default function MutationMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem
+          onClick={() => enqueueSnackbar("That was easy!")}
+          disableRipple
+        >
           <EditIcon sx={{mr: 1.5}} />
           Edit
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={() => {
+            mutate(id);
+            handleClose();
+          }}
           disableRipple
           sx={{color: theme.palette.error.main}}
         >

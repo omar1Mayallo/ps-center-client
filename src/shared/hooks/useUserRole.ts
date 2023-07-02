@@ -1,13 +1,14 @@
 import useAuthStore from "../../app/store/auth";
+import {UserRoles} from "../../entities/User";
 
 const useUserRole = () => {
   let userRole = "";
   let isOwner = false;
 
-  const userInfo = useAuthStore((s) => s.userInfo);
-  if (userInfo) {
-    userRole = userInfo.role;
-    isOwner = userRole === "OWNER";
+  const user = useAuthStore((s) => s.user);
+  if (user) {
+    userRole = user.role;
+    isOwner = userRole === UserRoles.OWNER;
   }
   return {userRole, isOwner};
 };

@@ -1,11 +1,10 @@
 import {Container, TextField} from "@mui/material";
 import {useMutation} from "@tanstack/react-query";
-import {enqueueSnackbar} from "notistack";
 import {Navigate} from "react-router-dom";
-import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
 import AuthForm from "../../../../shared/components/AuthForm";
 import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
+import useAuthServices from "../../services";
 import useLoginFormData, {LoginFormData} from "./useLoginFormData";
 
 export default function Login() {
@@ -16,18 +15,8 @@ export default function Login() {
     formState: {errors},
   } = useLoginFormData();
 
-  // USER_STORE
-  const {user, setUser, setUserInfo} = useAuthStore();
-
-  // LOGIN_SERVICE
-  async function login(body: LoginFormData) {
-    const res = await api.post("/auth/login", body);
-    if (res.status === 200) {
-      setUser(res.data.token);
-      setUserInfo(res.data.user);
-      enqueueSnackbar("Successfully Login", {variant: "success"});
-    }
-  }
+  // HANDLE_LOGIN
+  const {login} = useAuthServices();
   const {mutate, isLoading} = useMutation(login, {
     onError: catchAndNotifyErrors,
   });
@@ -35,8 +24,9 @@ export default function Login() {
     mutate(data);
   };
 
-  // REDIRECT_TO_HOME_IF_LOGGED_IN
-  if (user) return <Navigate to="/" />;
+  // IF_LOGGED_IN_REDIRECT_TO_HOME
+  const {token} = useAuthStore();
+  if (token) return <Navigate to="/" />;
 
   return (
     <Container component={"section"} maxWidth="xs">

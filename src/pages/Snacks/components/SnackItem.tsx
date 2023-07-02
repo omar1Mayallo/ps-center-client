@@ -2,19 +2,9 @@ import {Box, Card, CardContent, Chip, Stack, Typography} from "@mui/material";
 import DateText from "../../../shared/components/DateText";
 import useUserRole from "../../../shared/hooks/useUserRole";
 import MutationMenu from "../../../shared/components/MutationMenu";
+import Snack from "../../../entities/Snack";
 
-export interface SnackItemI {
-  buyingPrice: number;
-  createdAt: string;
-  name: string;
-  quantityInStock: number;
-  sellingPrice: number;
-  sold: number;
-  updatedAt: string;
-  _id: string;
-}
-
-export default function SnackItem({...item}: SnackItemI) {
+export default function SnackItem({...item}: Snack) {
   const {isOwner} = useUserRole();
   const {
     createdAt,
@@ -54,7 +44,7 @@ export default function SnackItem({...item}: SnackItemI) {
               size="small"
             />
             <Chip label={`Sold: ${sold}`} color={"success"} size="small" />
-            {isOwner && <MutationMenu />}
+            {isOwner && <MutationMenu id={_id} />}
           </Stack>
         </Stack>
 

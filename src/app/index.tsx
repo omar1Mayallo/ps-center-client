@@ -5,6 +5,7 @@ import {useLoggedUser} from "./store/auth";
 
 function App() {
   useLoggedUser();
+
   return (
     <>
       <ThemeProvider>

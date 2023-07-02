@@ -1,31 +1,23 @@
 import {Alert, Box, Grid} from "@mui/material";
 import {useQuery} from "@tanstack/react-query";
 import {AxiosError} from "axios";
-import api, {ResErrorsI} from "../../api";
-import useAuthStore from "../../app/store/auth";
-import SnackItem, {SnackItemI} from "./components/SnackItem";
-import SnackItemListSkeleton from "./components/SnackItemListLoader";
+import {ResErrorsI} from "../../api";
+import Snack from "../../entities/Snack";
+import {GetAllResI} from "../../shared/types/APITypes";
+import SnackItemListSkeleton from "./components/Skeleton";
+import SnackItem from "./components/SnackItem";
+import useSnacksServices from "./services";
 
 export default function Snacks() {
-  const {user} = useAuthStore();
-
-  // GET_SNACKS
-  async function getSnacks() {
-    const {data} = await api.get("/snacks", {
-      headers: {
-        Authorization: "Bearer " + user,
-      },
-    });
-    return data.data.docs as SnackItemI[];
-  }
+  // HANDLE_GET_ALL_SNACKS
+  const {getAllSnacks} = useSnacksServices();
   const {data, isLoading, isError, error} = useQuery<
-    SnackItemI[],
+    GetAllResI<Snack>,
     AxiosError<ResErrorsI>
   >({
     queryKey: ["snacks"],
-    queryFn: getSnacks,
+    queryFn: getAllSnacks,
   });
-
   if (isError) {
     return (
       <Alert variant="filled" color="error">
@@ -40,7 +32,7 @@ export default function Snacks() {
         {isLoading ? (
           <SnackItemListSkeleton />
         ) : (
-          data.map((item, idx) => (
+          data.data.docs.map((item, idx) => (
             <Grid item xs={12} sm={6} lg={4} key={idx}>
               <SnackItem {...item} />
             </Grid>

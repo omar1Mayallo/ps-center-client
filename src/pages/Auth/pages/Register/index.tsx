@@ -1,11 +1,10 @@
 import {Container, TextField} from "@mui/material";
 import {useMutation} from "@tanstack/react-query";
-import {enqueueSnackbar} from "notistack";
 import {Navigate} from "react-router-dom";
-import api from "../../../../api";
 import useAuthStore from "../../../../app/store/auth";
 import AuthForm from "../../../../shared/components/AuthForm";
 import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
+import useAuthServices from "../../services";
 import useRegisterFormData, {RegisterFormData} from "./useRegisterFormData";
 
 export default function Register() {
@@ -16,18 +15,8 @@ export default function Register() {
     formState: {errors},
   } = useRegisterFormData();
 
-  // USER_STORE
-  const {user, setUser, setUserInfo} = useAuthStore();
-
-  // REGISTER_SERVICE
-  async function register(body: RegisterFormData) {
-    const res = await api.post("/auth/register", body);
-    if (res.status === 201) {
-      setUser(res.data.token);
-      setUserInfo(res.data.user);
-      enqueueSnackbar("Successfully Register", {variant: "success"});
-    }
-  }
+  // HANDLE_REGISTER
+  const {register} = useAuthServices();
   const {mutate, isLoading} = useMutation(register, {
     onError: catchAndNotifyErrors,
   });
@@ -35,8 +24,9 @@ export default function Register() {
     mutate(data);
   };
 
-  // REDIRECT_TO_HOME_IF_LOGGED_IN
-  if (user) return <Navigate to={"/"} />;
+  // IF_REGISTER_REDIRECT_TO_HOME
+  const {token} = useAuthStore();
+  if (token) return <Navigate to="/" />;
 
   return (
     <Container component={"section"} maxWidth="xs">

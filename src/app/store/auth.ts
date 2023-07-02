@@ -1,53 +1,42 @@
-import {create} from "zustand";
 import Cookies from "js-cookie";
 import {enqueueSnackbar} from "notistack";
-import api from "../../api";
 import {useEffect} from "react";
-
-interface UserInfoI {
-  _id: string;
-  username: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import {create} from "zustand";
+import {getData} from "../../api/APIMethods";
+import User from "../../entities/User";
+import {GetOneResI} from "../../shared/types/APITypes";
 
 interface AuthStore {
-  user: string | null;
-  setUser: (userToken: string) => void;
+  token: string | null;
+  setToken: (userToken: string) => void;
   logout: () => void;
-  setUserInfo: (userInfo: UserInfoI) => void;
-  userInfo: UserInfoI | null;
+  setUser: (user: User) => void;
+  user: User | null;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
-  user: Cookies.get("token") || null,
-  setUser: (userToken: string) => {
+  token: Cookies.get("token") || null,
+  setToken: (userToken: string) => {
     Cookies.set("token", userToken, {expires: 10});
-    set({user: Cookies.get("token")});
+    set({token: Cookies.get("token")});
+  },
+  user: null,
+  setUser: (user: User) => {
+    set({user});
   },
   logout: () => {
     enqueueSnackbar("Successfully logged out", {variant: "success"});
     Cookies.remove("token");
-    set({user: null, userInfo: null});
+    set({token: null, user: null});
   },
-  setUserInfo: (userInfo: UserInfoI) => {
-    set({userInfo});
-  },
-  userInfo: null,
 }));
 
 export const useLoggedUser = () => {
-  const {user, setUserInfo} = useAuthStore();
+  const setUser = useAuthStore((s) => s.setUser);
 
   async function getLoggedUser() {
-    const res = await api.get("/users/my-profile", {
-      headers: {
-        Authorization: "Bearer " + user,
-      },
-    });
-    setUserInfo(res.data.data.doc as UserInfoI);
+    const res = await getData<GetOneResI<User>>("/users/my-profile");
+    setUser(res.data.doc);
   }
 
   useEffect(() => {

@@ -7,7 +7,8 @@ const api = axios.create({
 // ERROR_TYPE (When i run the server in production mode)
 export interface ResErrorsI {
   status: string;
-  message: string | string[];
+  message?: string;
+  errors?: string[];
 }
 
 export default api;

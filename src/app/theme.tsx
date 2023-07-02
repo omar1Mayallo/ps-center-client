@@ -6,10 +6,7 @@ import {
 import CssBaseline from "@mui/material/CssBaseline";
 import {useColorModeStore} from "./store/theme";
 
-interface ThemeProviderProps {
-  children: ReactNode;
-}
-export default function ThemeProvider({children}: ThemeProviderProps) {
+export default function ThemeProvider({children}: {children: ReactNode}) {
   const mode = useColorModeStore((s) => s.mode);
   const theme = useMemo(
     () =>

@@ -1,22 +1,24 @@
 import {Navigate, Outlet} from "react-router-dom";
 import useAuthStore from "../app/store/auth";
+import {UserRoles} from "../entities/User";
 
 const AuthRoutes = () => {
-  const {user} = useAuthStore();
-  if (!user) {
+  const {token} = useAuthStore();
+  if (!token) {
     return <Navigate to="/login" />;
   }
   return <Outlet />;
 };
 
-const PrivateRoutes = ({userRole}: {userRole: string | string[]}) => {
-  const {userInfo} = useAuthStore();
-
-  if (userInfo) {
+interface AccessibleUserRoles {
+  userRole: UserRoles | UserRoles[];
+}
+const PrivateRoutes = ({userRole}: AccessibleUserRoles) => {
+  const user = useAuthStore((s) => s.user);
+  if (user) {
     const isAuthorized = Array.isArray(userRole)
-      ? userRole.includes(userInfo.role)
-      : userInfo.role === userRole;
-
+      ? userRole.includes(user.role)
+      : user.role === userRole;
     if (isAuthorized) {
       return <Outlet />;
     }

@@ -9,6 +9,7 @@ import Sessions from "../pages/Sessions";
 import Snacks from "../pages/Snacks";
 import Users from "../pages/Users";
 import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
+import {UserRoles} from "../entities/User";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -23,7 +24,9 @@ const router = createBrowserRouter([
         children: [
           {index: true, element: <Devices />},
           {
-            element: <PrivateRoutes userRole={["ADMIN", "OWNER"]} />,
+            element: (
+              <PrivateRoutes userRole={[UserRoles.ADMIN, UserRoles.OWNER]} />
+            ),
             children: [
               {path: "orders", element: <Orders />},
               {path: "snacks", element: <Snacks />},
