@@ -6,7 +6,6 @@ import {EditSnackFormData} from "../validation/useEditSnackFormData";
 export default function useEditSnack(id: string) {
   const {editSnack} = useSnacksAPIs();
   const queryClient = useQueryClient();
-  // DELETE_SNACK_HANDLER
   return useMutation({
     mutationFn: (data: EditSnackFormData) => editSnack(id, data),
     onSuccess: () => {

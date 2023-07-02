@@ -1,11 +1,14 @@
-import {Alert, Box, Grid} from "@mui/material";
+import {Alert, Box, Button, Grid} from "@mui/material";
 import SnackItemListSkeleton from "./components/Skeleton";
 import SnackItem from "./components/SnackItem";
 import useGetAllSnacks from "./services/getAllSnacks";
+import {useNavigate} from "react-router-dom";
 
 export default function Snacks() {
   // HANDLE_GET_ALL_SNACKS
   const {data, isLoading, isError, error} = useGetAllSnacks();
+
+  const navigate = useNavigate();
 
   if (isError) {
     return (
@@ -17,6 +20,11 @@ export default function Snacks() {
 
   return (
     <Box component={"section"}>
+      <Box textAlign={"end"} mb={2}>
+        <Button variant="outlined" onClick={() => navigate("/snacks/create")}>
+          Add New
+        </Button>
+      </Box>
       <Grid container spacing={2}>
         {isLoading ? (
           <SnackItemListSkeleton />

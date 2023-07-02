@@ -1,10 +1,12 @@
 import {enqueueSnackbar} from "notistack";
-import {deleteData, getData, putData} from "../../../api/APIMethods";
+import {deleteData, getData, postData, putData} from "../../../api/APIMethods";
 import Snack from "../../../entities/Snack";
 import {GetAllResI, GetOneResI} from "../../../shared/types/APITypes";
 import {EditSnackFormData} from "../validation/useEditSnackFormData";
+import {useNavigate} from "react-router-dom";
 
 const useSnacksAPIs = () => {
+  const navigate = useNavigate();
   // GET_ALL_SNACKS
   async function getAllSnacks() {
     const res = await getData<GetAllResI<Snack>>("/snacks");
@@ -31,7 +33,16 @@ const useSnacksAPIs = () => {
       enqueueSnackbar("Successfully Edited", {variant: "success"});
   }
 
-  return {getAllSnacks, deleteSnack, editSnack, getSnack};
+  // CREATE_SNACK
+  async function createSnack(data: EditSnackFormData) {
+    const res = await postData(`/snacks`, data);
+    if (res.status === 201) {
+      enqueueSnackbar("Successfully Created", {variant: "success"});
+      navigate("/snacks");
+    }
+  }
+
+  return {getAllSnacks, deleteSnack, editSnack, getSnack, createSnack};
 };
 
 export default useSnacksAPIs;
