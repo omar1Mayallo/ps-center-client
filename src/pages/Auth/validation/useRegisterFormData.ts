@@ -1,5 +1,5 @@
 import yup, {object, string} from "yup";
-import useFormValidation from "../../../../shared/hooks/useFormValidation";
+import useFormValidation from "../../../shared/hooks/useFormValidation";
 
 // REGISTER SCHEMA OBJECT
 const registerSchemaValidation = object({

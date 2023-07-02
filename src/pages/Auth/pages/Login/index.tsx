@@ -1,11 +1,11 @@
 import {Container, TextField} from "@mui/material";
-import {useMutation} from "@tanstack/react-query";
 import {Navigate} from "react-router-dom";
 import useAuthStore from "../../../../app/store/auth";
 import AuthForm from "../../../../shared/components/AuthForm";
-import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
-import useAuthServices from "../../services";
-import useLoginFormData, {LoginFormData} from "./useLoginFormData";
+import useLogin from "../../services/login";
+import useLoginFormData, {
+  LoginFormData,
+} from "../../validation/useLoginFormData";
 
 export default function Login() {
   // FORM_VALIDATION
@@ -16,10 +16,7 @@ export default function Login() {
   } = useLoginFormData();
 
   // HANDLE_LOGIN
-  const {login} = useAuthServices();
-  const {mutate, isLoading} = useMutation(login, {
-    onError: catchAndNotifyErrors,
-  });
+  const {mutate, isLoading} = useLogin();
   const onSubmit = (data: LoginFormData) => {
     mutate(data);
   };
@@ -67,78 +64,3 @@ export default function Login() {
     </Container>
   );
 }
-/*
-{<Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{mt: 1}}
-        >
-          <TextField
-            inputProps={{...register("email")}}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            margin="normal"
-            required
-            fullWidth
-            type="email"
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            inputProps={{...register("password")}}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            margin="normal"
-            required
-            fullWidth
-            type="password"
-            id="password"
-            name="password"
-            label="Password"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{mt: 3, mb: 2}}
-            fullWidth
-            disabled={isLoading}
-            startIcon={
-              isLoading && <CircularProgress size={15} color="inherit" />
-            }
-          >
-            <span>{isLoading ? "Loading" : "Sign In"}</span>
-          </Button>
-
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link component={RouterLink} to="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box> }
-*/

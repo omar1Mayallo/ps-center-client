@@ -1,8 +1,9 @@
 import {Box, Card, CardContent, Chip, Stack, Typography} from "@mui/material";
 import DateText from "../../../shared/components/DateText";
 import useUserRole from "../../../shared/hooks/useUserRole";
-import MutationMenu from "../../../shared/components/MutationMenu";
+import MutationMenu from "./MutationMenu";
 import Snack from "../../../entities/Snack";
+import {useParams} from "react-router-dom";
 
 export default function SnackItem({...item}: Snack) {
   const {isOwner} = useUserRole();
@@ -17,6 +18,7 @@ export default function SnackItem({...item}: Snack) {
     sold,
   } = item;
 
+  const {snackId} = useParams();
   return (
     <Card elevation={2}>
       <CardContent sx={{display: "flex", flexDirection: "column", gap: 1.5}}>
@@ -44,7 +46,7 @@ export default function SnackItem({...item}: Snack) {
               size="small"
             />
             <Chip label={`Sold: ${sold}`} color={"success"} size="small" />
-            {isOwner && <MutationMenu id={_id} />}
+            {isOwner && !snackId && <MutationMenu id={_id} />}
           </Stack>
         </Stack>
 

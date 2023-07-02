@@ -1,7 +1,7 @@
 import {Card, Grid, Skeleton, Stack} from "@mui/material";
 import generateArrOfNum from "../../../shared/helpers/generateArrOfNum";
 
-const SnackItemSkeleton = () => {
+export const SnackItemSkeleton = () => {
   return (
     <Card elevation={2} sx={{p: 3}}>
       <Stack direction={"row"} justifyContent={"space-between"}>

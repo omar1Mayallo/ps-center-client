@@ -2,8 +2,8 @@ import {enqueueSnackbar} from "notistack";
 import {postData} from "../../../api/APIMethods";
 import useAuthStore from "../../../app/store/auth";
 import User from "../../../entities/User";
-import {LoginFormData} from "../pages/Login/useLoginFormData";
-import {RegisterFormData} from "../pages/Register/useRegisterFormData";
+import {LoginFormData} from "../validation/useLoginFormData";
+import {RegisterFormData} from "../validation/useRegisterFormData";
 
 interface AuthResponse {
   status: string;
@@ -11,7 +11,7 @@ interface AuthResponse {
   user: User;
 }
 
-const useAuthServices = () => {
+const useAuthAPIs = () => {
   const {setToken, setUser} = useAuthStore();
 
   // LOGIN
@@ -37,4 +37,4 @@ const useAuthServices = () => {
   return {login, register};
 };
 
-export default useAuthServices;
+export default useAuthAPIs;

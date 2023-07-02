@@ -1,11 +1,11 @@
 import {Container, TextField} from "@mui/material";
-import {useMutation} from "@tanstack/react-query";
 import {Navigate} from "react-router-dom";
 import useAuthStore from "../../../../app/store/auth";
 import AuthForm from "../../../../shared/components/AuthForm";
-import catchAndNotifyErrors from "../../../../shared/helpers/catchAndNotifyErrors";
-import useAuthServices from "../../services";
-import useRegisterFormData, {RegisterFormData} from "./useRegisterFormData";
+import useRegister from "../../services/register";
+import useRegisterFormData, {
+  RegisterFormData,
+} from "../../validation/useRegisterFormData";
 
 export default function Register() {
   // FORM_VALIDATION
@@ -16,10 +16,7 @@ export default function Register() {
   } = useRegisterFormData();
 
   // HANDLE_REGISTER
-  const {register} = useAuthServices();
-  const {mutate, isLoading} = useMutation(register, {
-    onError: catchAndNotifyErrors,
-  });
+  const {mutate, isLoading} = useRegister();
   const onSubmit = (data: RegisterFormData) => {
     mutate(data);
   };

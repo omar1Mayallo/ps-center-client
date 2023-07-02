@@ -1,23 +1,12 @@
 import {Alert, Box, Grid} from "@mui/material";
-import {useQuery} from "@tanstack/react-query";
-import {AxiosError} from "axios";
-import {ResErrorsI} from "../../api";
-import Snack from "../../entities/Snack";
-import {GetAllResI} from "../../shared/types/APITypes";
 import SnackItemListSkeleton from "./components/Skeleton";
 import SnackItem from "./components/SnackItem";
-import useSnacksServices from "./services";
+import useGetAllSnacks from "./services/getAllSnacks";
 
 export default function Snacks() {
   // HANDLE_GET_ALL_SNACKS
-  const {getAllSnacks} = useSnacksServices();
-  const {data, isLoading, isError, error} = useQuery<
-    GetAllResI<Snack>,
-    AxiosError<ResErrorsI>
-  >({
-    queryKey: ["snacks"],
-    queryFn: getAllSnacks,
-  });
+  const {data, isLoading, isError, error} = useGetAllSnacks();
+
   if (isError) {
     return (
       <Alert variant="filled" color="error">
