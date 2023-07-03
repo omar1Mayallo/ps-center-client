@@ -9,9 +9,11 @@ import Sessions from "../pages/Sessions";
 import Snacks from "../pages/Snacks";
 import Users from "../pages/Users";
 import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
-import {UserRoles} from "../entities/User";
+import {UserRoles} from "../shared/types/entities/User";
 import EditSnack from "../pages/Snacks/pages/EditSnack";
 import CreateSnack from "../pages/Snacks/pages/CreateSnack";
+import EditOrder from "../pages/Orders/pages/EditOrder";
+import CreateOrder from "../pages/Orders/pages/CreateOrder";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -43,7 +45,14 @@ const router = createBrowserRouter([
                   },
                 ],
               },
-              {path: "orders", element: <Orders />},
+              {
+                path: "orders",
+                children: [
+                  {index: true, element: <Orders />},
+                  {path: ":orderId/edit", element: <EditOrder />},
+                  {path: "create", element: <CreateOrder />},
+                ],
+              },
               {path: "sessions", element: <Sessions />},
               {path: "users", element: <Users />},
             ],

@@ -1,4 +1,4 @@
-import {PaginationI} from "./Pagination";
+import PaginationI from "./Pagination";
 
 export interface GetAllResI<EntityT> {
   status: string;

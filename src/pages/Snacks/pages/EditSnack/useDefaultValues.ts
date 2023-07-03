@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {EditSnackFormData} from "../../validation/useEditSnackFormData";
 import {GetOneResI} from "../../../../shared/types/APITypes";
-import Snack from "../../../../entities/Snack";
+import Snack from "../../../../shared/types/entities/Snack";
 
 export default function useDefaultValues(data: GetOneResI<Snack> | undefined) {
   const [defaultValues, setDefaultValues] = useState<EditSnackFormData>({});

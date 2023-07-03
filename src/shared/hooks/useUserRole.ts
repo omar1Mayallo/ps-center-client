@@ -1,5 +1,5 @@
 import useAuthStore from "../../app/store/auth";
-import {UserRoles} from "../../entities/User";
+import {UserRoles} from "../types/entities/User";
 
 const useUserRole = () => {
   let userRole = "";

@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {GetAllResI} from "../../../shared/types/APITypes";
 import {AxiosError} from "axios";
-import Snack from "../../../entities/Snack";
+import Snack from "../../../shared/types/entities/Snack";
 import {ResErrorsI} from "../../../api";
 import useSnacksAPIs from "../api";
 

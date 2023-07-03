@@ -1,6 +1,6 @@
 import {enqueueSnackbar} from "notistack";
 import {deleteData, getData, postData, putData} from "../../../api/APIMethods";
-import Snack from "../../../entities/Snack";
+import Snack from "../../../shared/types/entities/Snack";
 import {GetAllResI, GetOneResI} from "../../../shared/types/APITypes";
 import {EditSnackFormData} from "../validation/useEditSnackFormData";
 import {useNavigate} from "react-router-dom";
@@ -9,7 +9,9 @@ const useSnacksAPIs = () => {
   const navigate = useNavigate();
   // GET_ALL_SNACKS
   async function getAllSnacks() {
-    const res = await getData<GetAllResI<Snack>>("/snacks");
+    const res = await getData<GetAllResI<Snack>>(
+      "/snacks?sort=-quantityInStock"
+    );
     return res;
   }
 

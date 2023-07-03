@@ -3,7 +3,7 @@ import {enqueueSnackbar} from "notistack";
 import {useEffect} from "react";
 import {create} from "zustand";
 import {getData} from "../../api/APIMethods";
-import User from "../../entities/User";
+import User from "../../shared/types/entities/User";
 import {GetOneResI} from "../../shared/types/APITypes";
 
 interface AuthStore {

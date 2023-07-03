@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider
         preventDuplicate
-        autoHideDuration={2000}
+        autoHideDuration={3000}
         maxSnack={3}
         action={(snackbarId) => (
           <IconButton

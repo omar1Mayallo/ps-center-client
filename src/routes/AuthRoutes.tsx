@@ -1,6 +1,6 @@
 import {Navigate, Outlet} from "react-router-dom";
 import useAuthStore from "../app/store/auth";
-import {UserRoles} from "../entities/User";
+import {UserRoles} from "../shared/types/entities/User";
 
 const AuthRoutes = () => {
   const {token} = useAuthStore();

@@ -2,7 +2,7 @@ import {Box, Card, CardContent, Chip, Stack, Typography} from "@mui/material";
 import DateText from "../../../shared/components/DateText";
 import useUserRole from "../../../shared/hooks/useUserRole";
 import MutationMenu from "./MutationMenu";
-import Snack from "../../../entities/Snack";
+import Snack from "../../../shared/types/entities/Snack";
 import {useParams} from "react-router-dom";
 
 export default function SnackItem({...item}: Snack) {

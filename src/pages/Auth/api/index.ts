@@ -1,7 +1,7 @@
 import {enqueueSnackbar} from "notistack";
 import {postData} from "../../../api/APIMethods";
 import useAuthStore from "../../../app/store/auth";
-import User from "../../../entities/User";
+import User from "../../../shared/types/entities/User";
 import {LoginFormData} from "../validation/useLoginFormData";
 import {RegisterFormData} from "../validation/useRegisterFormData";
 
