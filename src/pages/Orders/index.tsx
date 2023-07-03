@@ -1,12 +1,12 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {Alert, Box, Button, CircularProgress, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import SnackItemListSkeleton from "../Snacks/components/Skeleton";
-import OrderCard from "./components/OrderCard";
-import useGetAllOrders from "./services/getAllOrders";
-import useDeleteAllOrders from "./services/deleteAllOrders";
+import GridListSkeleton from "../../shared/components/Loader/GridSkeleton";
 import useUserRole from "../../shared/hooks/useUserRole";
+import OrderCard from "./components/OrderCard";
+import useDeleteAllOrders from "./services/deleteAllOrders";
+import useGetAllOrders from "./services/getAllOrders";
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function Orders() {
       </Box>
       <Grid container spacing={2}>
         {isLoading ? (
-          <SnackItemListSkeleton />
+          <GridListSkeleton numOfItems={4} xs={12} sm={12} lg={6} />
         ) : data.data.docs.length > 0 ? (
           data.data.docs.map((item, idx) => (
             <Grid item xs={12} lg={6} key={idx}>

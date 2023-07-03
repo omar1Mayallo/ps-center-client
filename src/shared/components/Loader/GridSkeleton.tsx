@@ -1,7 +1,7 @@
 import {Card, Grid, Skeleton, Stack} from "@mui/material";
 import generateArrOfNum from "../../../shared/helpers/generateArrOfNum";
 
-export const SnackItemSkeleton = () => {
+export const CardItemSkeleton = () => {
   return (
     <Card elevation={2} sx={{p: 3}}>
       <Stack direction={"row"} justifyContent={"space-between"}>
@@ -17,12 +17,19 @@ export const SnackItemSkeleton = () => {
   );
 };
 
-export default function SnackItemListSkeleton() {
+export default function GridListSkeleton({
+  numOfItems,
+  xs,
+  sm,
+  lg,
+}: {
+  [index: string]: number;
+}) {
   return (
     <Grid container spacing={2} p={2}>
-      {generateArrOfNum(9).map((item) => (
-        <Grid item xs={12} sm={6} lg={4} key={item}>
-          <SnackItemSkeleton />
+      {generateArrOfNum(numOfItems).map((item) => (
+        <Grid item xs={xs} sm={sm} lg={lg} key={item}>
+          <CardItemSkeleton />
         </Grid>
       ))}
     </Grid>

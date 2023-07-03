@@ -9,8 +9,8 @@ import {
 import {Controller} from "react-hook-form";
 import {useParams} from "react-router-dom";
 import Head from "../../../../shared/components/Head";
+import {CardItemSkeleton} from "../../../../shared/components/Loader/GridSkeleton";
 import SkeletonForm from "../../../../shared/components/Loader/SkeletonForm";
-import {SnackItemSkeleton} from "../../components/Skeleton";
 import SnackItem from "../../components/SnackItem";
 import useEditSnack from "../../services/editSnack";
 import useGetSnack from "../../services/getSnack";
@@ -157,7 +157,7 @@ export default function EditSnack() {
         <Grid item xs={12} sm={6} md={4}>
           <Box>
             {isLoading ? (
-              <SnackItemSkeleton />
+              <CardItemSkeleton />
             ) : (
               <SnackItem {...data.data.doc} />
             )}

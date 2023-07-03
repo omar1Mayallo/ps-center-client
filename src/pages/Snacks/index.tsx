@@ -1,8 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import {Alert, Box, Button, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import GridListSkeleton from "../../shared/components/Loader/GridSkeleton";
 import useUserRole from "../../shared/hooks/useUserRole";
-import SnackItemListSkeleton from "./components/Skeleton";
 import SnackItem from "./components/SnackItem";
 import useGetAllSnacks from "./services/getAllSnacks";
 
@@ -37,7 +37,7 @@ export default function Snacks() {
       )}
       <Grid container spacing={2}>
         {isLoading ? (
-          <SnackItemListSkeleton />
+          <GridListSkeleton numOfItems={6} xs={12} sm={6} lg={4} />
         ) : data.data.docs.length > 0 ? (
           data.data.docs.map((item, idx) => (
             <Grid item xs={12} sm={6} lg={4} key={idx}>
