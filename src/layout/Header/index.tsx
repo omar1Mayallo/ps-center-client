@@ -14,7 +14,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import DarkLightButton from "./components/DarkLightButton";
 import Drawer from "./components/Drawer";
-import UserIcon from "./components/UserIcon";
+import LogoutButton from "./components/Logout";
 
 export default function Header() {
   const isLargeScreen: boolean = useMediaQuery<Theme>((theme) =>
@@ -80,7 +80,7 @@ export default function Header() {
                 {/* DARK/LIGHT_BUTTON */}
                 <DarkLightButton />
                 {/* LOGIN || USER_PROFILE */}
-                <UserIcon />
+                <LogoutButton />
               </Box>
             </Stack>
           </Toolbar>

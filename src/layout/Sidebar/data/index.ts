@@ -2,7 +2,6 @@ import DevicesIcon from "@mui/icons-material/Devices";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import TapasIcon from "@mui/icons-material/Tapas";
-import LogoutIcon from "@mui/icons-material/Logout";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import SvgIcon from "@mui/material/SvgIcon";
 
@@ -38,5 +37,4 @@ export const navItems: NavItem[] = [
     navUrl: "/users",
     isAuthorizedTo: ["ADMIN", "OWNER"],
   },
-  {navItem: "Logout", NavIcon: LogoutIcon},
 ];

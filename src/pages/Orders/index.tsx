@@ -30,7 +30,7 @@ export default function Orders() {
       <Box textAlign={"end"} mb={2}>
         <Button
           variant="outlined"
-          onClick={() => navigate("/snacks/create")}
+          onClick={() => navigate("/orders/create")}
           startIcon={<AddIcon />}
         >
           Add New
