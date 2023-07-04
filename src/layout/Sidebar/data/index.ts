@@ -4,6 +4,7 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import TapasIcon from "@mui/icons-material/Tapas";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import SvgIcon from "@mui/material/SvgIcon";
+import {UserRoles} from "../../../shared/types/entities/User";
 
 export interface NavItem {
   navItem: string;
@@ -17,24 +18,23 @@ export const navItems: NavItem[] = [
     navItem: "Sessions",
     NavIcon: SportsEsportsIcon,
     navUrl: "/sessions",
-    isAuthorizedTo: ["ADMIN", "OWNER"],
+    isAuthorizedTo: [UserRoles.ADMIN, UserRoles.OWNER],
   },
   {
     navItem: "Orders",
     NavIcon: ViewModuleIcon,
     navUrl: "/orders",
-    isAuthorizedTo: ["ADMIN", "OWNER"],
+    isAuthorizedTo: [UserRoles.ADMIN, UserRoles.OWNER],
   },
   {
     navItem: "Snacks",
     NavIcon: TapasIcon,
     navUrl: "/snacks",
-    isAuthorizedTo: ["ADMIN", "OWNER"],
   },
   {
     navItem: "Users",
     NavIcon: PeopleAltIcon,
     navUrl: "/users",
-    isAuthorizedTo: ["ADMIN", "OWNER"],
+    isAuthorizedTo: [UserRoles.ADMIN, UserRoles.OWNER],
   },
 ];

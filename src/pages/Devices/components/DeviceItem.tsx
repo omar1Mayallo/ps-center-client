@@ -13,31 +13,65 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import DateText from "../../../shared/components/DateText";
 import useUserRole from "../../../shared/hooks/useUserRole";
 import Device from "../../../shared/types/entities/Device";
 import {SessionTypes} from "../../../shared/types/entities/Session";
+import useEditDeviceSessionType from "../services/editDeviceSessionType";
 import CounterTimer from "./Timer";
-import {Link as RouterLink} from "react-router-dom";
+import useStartTime from "../services/startTime";
+import useEndTime from "../services/endTime";
+import useResetDevice from "../services/resetDevice";
+import useDeleteDevice from "../services/deleteDevice";
 
 export default function DeviceItem({item}: {item: Device}) {
+  const navigate = useNavigate();
   const {isOwner, isUser} = useUserRole();
   const sessionTypesArr = [
-    {
-      value: SessionTypes.DUO,
-    },
-    {
-      value: SessionTypes.MULTI,
-    },
+    {value: SessionTypes.DUO},
+    {value: SessionTypes.MULTI},
   ];
 
+  // EDIT_DEVICE_SESSION_TYPE
+  const {mutate: mutateSessionType, isLoading: isLoadingMutateSessionType} =
+    useEditDeviceSessionType(item._id);
+
+  // START_TIME
+  const {mutate: mutateStartTime, isLoading: isLoadingStartTime} = useStartTime(
+    item._id
+  );
+
+  // END_TIME
+  const {mutate: mutateEndTime, isLoading: isLoadingEndTime} = useEndTime(
+    item._id
+  );
+
+  // RESET_DEVICE
+  const {mutate: mutateReset, isLoading: isResetLoading} = useResetDevice(
+    item._id
+  );
+
+  // DELETE_DEVICE
+  const {mutate: mutateDelete, isLoading: isDeleteLoading} = useDeleteDevice();
+
   return (
-    <Card elevation={2} sx={{minHeight: isUser ? "268px" : "345px"}}>
+    <Card elevation={2} sx={{minHeight: isUser ? "256px" : "437px"}}>
       <CardContent
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: isUser ? 2 : item.order ? 2 : 2.5,
+
+          gap:
+            isUser && item.startTime
+              ? 2
+              : isUser
+              ? 5
+              : item.startTime && !item.order
+              ? 2.7
+              : item.startTime && item.order
+              ? 2.95
+              : 3.8,
         }}
       >
         {/* NAME / TYPE / DELETE_ICON*/}
@@ -56,16 +90,15 @@ export default function DeviceItem({item}: {item: Device}) {
             sx={{fontWeight: 700}}
           />
           {isOwner &&
-            (!Math.random() ? (
-              <CircularProgress size={20} />
+            (isDeleteLoading ? (
+              <CircularProgress size={20} color="error" />
             ) : (
               <IconButton
                 aria-label="delete"
                 color="error"
-                // onClick={() => {
-                //   mutate(item._id);
-                //   navigate("/orders");
-                // }}
+                onClick={() => {
+                  mutateDelete(item._id);
+                }}
               >
                 <DeleteIcon />
               </IconButton>
@@ -105,8 +138,32 @@ export default function DeviceItem({item}: {item: Device}) {
         {/* END_TIME */}
         {isUser ||
           (item.startTime && (
-            <Button variant="contained" color="error" size="small">
-              End Time
+            <Button
+              onClick={() => mutateEndTime()}
+              variant="contained"
+              color="error"
+              size="small"
+              disabled={isLoadingEndTime}
+              startIcon={
+                isLoadingEndTime && (
+                  <CircularProgress size={15} color="inherit" />
+                )
+              }
+            >
+              {isLoadingEndTime ? "Ending" : "End Time"}
+            </Button>
+          ))}
+
+        {/* MAKE_ORDER */}
+        {isUser ||
+          (item.startTime && !item.order && (
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={() => navigate("/orders/create")}
+            >
+              Make Order
             </Button>
           ))}
 
@@ -115,11 +172,16 @@ export default function DeviceItem({item}: {item: Device}) {
           ((item.isEmpty || !item.startTime) && (
             <>
               <TextField
-                id="outlined-select-currency"
+                id="outlined-select-session-type"
                 size="small"
                 select
-                label="Set SessionType"
+                label="Set Session Type"
                 defaultValue={item.sessionType}
+                onChange={(e) => {
+                  mutateSessionType({
+                    sessionType: e.target.value as SessionTypes,
+                  });
+                }}
               >
                 {sessionTypesArr.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -127,11 +189,40 @@ export default function DeviceItem({item}: {item: Device}) {
                   </MenuItem>
                 ))}
               </TextField>
-              <Button variant="contained" size="small">
-                Start Time
+              <Button
+                onClick={() => mutateStartTime()}
+                variant="contained"
+                size="small"
+                disabled={isLoadingStartTime}
+                startIcon={
+                  isLoadingStartTime && (
+                    <CircularProgress size={15} color="inherit" />
+                  )
+                }
+              >
+                {isLoadingStartTime ? "Starting" : "Start Time"}
               </Button>
             </>
           ))}
+
+        {/* RESET */}
+        {isUser || (
+          <Button
+            onClick={() => mutateReset()}
+            variant="outlined"
+            color="warning"
+            size="small"
+            disabled={
+              isResetLoading ||
+              (item.sessionType === SessionTypes.DUO && !item.startTime)
+            }
+            startIcon={
+              isResetLoading && <CircularProgress size={15} color="inherit" />
+            }
+          >
+            {isResetLoading ? "loading" : "Reset"}
+          </Button>
+        )}
 
         {/* SESSION TYPE / PRICES */}
         <Stack
@@ -144,6 +235,11 @@ export default function DeviceItem({item}: {item: Device}) {
               label={`Session Type: ${item.sessionType}`}
               color={"warning"}
               size="small"
+              icon={
+                isLoadingMutateSessionType ? (
+                  <CircularProgress size={15} />
+                ) : undefined
+              }
             />
             <Chip
               label={`Duo Price: ${item.duoPricePerHour} $`}

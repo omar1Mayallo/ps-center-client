@@ -2,8 +2,10 @@ import {enqueueSnackbar} from "notistack";
 import {deleteData, getData} from "../../../api/APIMethods";
 import Order from "../../../shared/types/entities/Order";
 import {GetAllResI, GetOneResI} from "../../../shared/types/APITypes";
+import {useNavigate} from "react-router-dom";
 
 const useOrdersAPIs = () => {
+  const navigate = useNavigate();
   // GET_ALL_ORDERS
   async function getAllOrders() {
     const res = await getData<GetAllResI<Order>>("/orders");
@@ -19,8 +21,10 @@ const useOrdersAPIs = () => {
   // DELETE_ORDERS
   async function deleteOrder(id: string) {
     const res = await deleteData(`/orders/${id}`);
-    if (res.status === 204)
+    if (res.status === 204) {
       enqueueSnackbar("Successfully deleted", {variant: "success"});
+      navigate("/orders");
+    }
   }
 
   // DELETE_ALL_ORDERS

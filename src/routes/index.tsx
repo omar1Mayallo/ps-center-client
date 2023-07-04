@@ -5,15 +5,15 @@ import Login from "../pages/Auth/pages/Login";
 import Register from "../pages/Auth/pages/Register";
 import Devices from "../pages/Devices";
 import Orders from "../pages/Orders";
+import CreateOrder from "../pages/Orders/pages/CreateOrder";
+import EditOrder from "../pages/Orders/pages/EditOrder";
 import Sessions from "../pages/Sessions";
 import Snacks from "../pages/Snacks";
-import Users from "../pages/Users";
-import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
-import {UserRoles} from "../shared/types/entities/User";
-import EditSnack from "../pages/Snacks/pages/EditSnack";
 import CreateSnack from "../pages/Snacks/pages/CreateSnack";
-import EditOrder from "../pages/Orders/pages/EditOrder";
-import CreateOrder from "../pages/Orders/pages/CreateOrder";
+import EditSnack from "../pages/Snacks/pages/EditSnack";
+import Users from "../pages/Users";
+import {UserRoles} from "../shared/types/entities/User";
+import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -26,7 +26,11 @@ const router = createBrowserRouter([
       {
         element: <AuthRoutes />,
         children: [
+          // FOR USER
           {index: true, element: <Devices />},
+          {path: "snacks", element: <Snacks />},
+
+          // FOR OWNER & ADMIN
           {
             element: (
               <PrivateRoutes userRole={[UserRoles.ADMIN, UserRoles.OWNER]} />
@@ -35,7 +39,6 @@ const router = createBrowserRouter([
               {
                 path: "snacks",
                 children: [
-                  {index: true, element: <Snacks />},
                   {
                     element: <PrivateRoutes userRole={UserRoles.OWNER} />,
                     children: [

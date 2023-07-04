@@ -1,17 +1,22 @@
 import AddIcon from "@mui/icons-material/Add";
-import {Alert, Box, Button, Grid} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import useUserRole from "../../shared/hooks/useUserRole";
 import useGetAllDevices from "./services/getAllDevices";
 import GridListSkeleton from "../../shared/components/Loader/GridSkeleton";
 import DeviceItem from "./components/DeviceItem";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import useResetAllDevices from "./services/resetAllDevices";
 
 export default function Devices() {
   const navigate = useNavigate();
-  const {isOwner} = useUserRole();
+  const {isOwner, isUser} = useUserRole();
 
-  // HANDLE_GET_ALL_SNACKS
+  // HANDLE_GET_ALL_DEVICES
   const {data, isLoading, isError, error} = useGetAllDevices();
+
+  // RESET_ALL_DEVICES
+  const {mutate, isLoading: isResetAllLoading} = useResetAllDevices();
 
   if (isError) {
     return (
@@ -21,22 +26,42 @@ export default function Devices() {
     );
   }
 
-  console.log(data?.data.docs);
-
   return (
     <Box component={"section"}>
       {/* CREATE_DEVICE */}
-      {isOwner && (
-        <Box textAlign={"end"} mb={2}>
+
+      <Box textAlign={"end"} mb={2}>
+        {isUser ||
+          (data && data.data.docs.length > 0 && (
+            <>
+              <Button
+                onClick={() => mutate()}
+                variant="outlined"
+                color="secondary"
+                disabled={isResetAllLoading}
+                startIcon={
+                  isResetAllLoading ? (
+                    <CircularProgress size={15} color="inherit" />
+                  ) : (
+                    <RestartAltIcon color="inherit" />
+                  )
+                }
+              >
+                {isResetAllLoading ? "Loading" : "Reset All"}
+              </Button>{" "}
+            </>
+          ))}
+
+        {isOwner && (
           <Button
             variant="outlined"
-            onClick={() => navigate("/snacks/create")}
+            onClick={() => navigate("/devices/create")}
             startIcon={<AddIcon />}
           >
             Add New
           </Button>
-        </Box>
-      )}
+        )}
+      </Box>
 
       <Grid container spacing={2}>
         {isLoading ? (
@@ -50,7 +75,7 @@ export default function Devices() {
         ) : (
           <Grid item xs={12}>
             <Alert variant="outlined" color="warning" severity="info">
-              No Orders Added Yet
+              No Devices Added Yet
             </Alert>
           </Grid>
         )}

@@ -11,7 +11,7 @@ export async function getData<TRes>(url: string) {
   return res.data;
 }
 
-export async function postData<TRes>(url: string, data: any) {
+export async function postData<TRes>(url: string, data?: any) {
   const res = await api.post<TRes>(url, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
@@ -20,7 +20,7 @@ export async function postData<TRes>(url: string, data: any) {
   return res;
 }
 
-export async function putData(url: string, data: any) {
+export async function putData(url: string, data?: any) {
   const res = await api.put(url, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
@@ -29,7 +29,7 @@ export async function putData(url: string, data: any) {
   return res;
 }
 
-export async function patchData(url: string, data: any) {
+export async function patchData(url: string, data?: any) {
   const res = await api.patch(url, data, {
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,

@@ -6,7 +6,7 @@ import Snack from "../../../shared/types/entities/Snack";
 import {useParams} from "react-router-dom";
 
 export default function SnackItem({...item}: Snack) {
-  const {isOwner} = useUserRole();
+  const {isOwner, isUser} = useUserRole();
   const {
     createdAt,
     updatedAt,
@@ -45,7 +45,9 @@ export default function SnackItem({...item}: Snack) {
               color={quantityInStock > 0 ? "primary" : "error"}
               size="small"
             />
-            <Chip label={`Sold: ${sold}`} color={"success"} size="small" />
+            {isUser || (
+              <Chip label={`Sold: ${sold}`} color={"success"} size="small" />
+            )}
             {isOwner && !snackId && <MutationMenu id={_id} />}
           </Stack>
         </Stack>

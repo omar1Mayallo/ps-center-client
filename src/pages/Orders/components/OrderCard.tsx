@@ -15,10 +15,8 @@ import Order, {
 import DateText from "../../../shared/components/DateText";
 import OrderSnackItem from "./OrderSnackItem";
 import useDeleteOrder from "../services/deleteOrder";
-import {useNavigate} from "react-router-dom";
 
 export default function OrderCard({item}: {item: Order}) {
-  const navigate = useNavigate();
   // DELETE_SNACK_HANDLER
   const {mutate, isLoading} = useDeleteOrder();
 
@@ -50,7 +48,6 @@ export default function OrderCard({item}: {item: Order}) {
                 color="error"
                 onClick={() => {
                   mutate(item._id);
-                  navigate("/orders");
                 }}
               >
                 <DeleteIcon />
