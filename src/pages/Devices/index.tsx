@@ -35,13 +35,6 @@ export default function Devices() {
           (data && data.data.docs.length > 0 && (
             <>
               <Button
-                onClick={() => navigate("/orders/create")}
-                variant="outlined"
-                color="success"
-              >
-                Make Order
-              </Button>{" "}
-              <Button
                 onClick={() => mutate()}
                 variant="outlined"
                 color="secondary"
