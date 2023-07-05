@@ -25,12 +25,6 @@ export default function EditOrder() {
   // HANDLE_GET_ORDER
   const {data, isLoading, isError, error} = useGetOrder(orderId as string);
 
-  // const {
-  //   data: devicesData,
-  //   isLoading: devicesIsLoading,
-  //   error: devicesError,
-  // } = useGetAllDevices();
-
   const {
     data: snacksData,
     isLoading: snacksIsLoading,
@@ -123,39 +117,6 @@ export default function EditOrder() {
                   />
                 )}
               />
-
-              {/* DEVICE */}
-              {/* <TextField
-                {...register("deviceId")}
-                error={!!errors.deviceId}
-                helperText={errors.deviceId?.message}
-                select
-                margin="normal"
-                fullWidth
-                name="deviceId"
-                id="deviceId"
-                label="Device"
-                defaultValue={undefined}
-              >
-                <MenuItem value={undefined}>None</MenuItem>
-                {devicesIsLoading ? (
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <CircularProgress size={30} />
-                  </Box>
-                ) : devicesError ? (
-                  <Box p={1}>
-                    <Alert variant="outlined" color="error">
-                      {devicesError.message}
-                    </Alert>
-                  </Box>
-                ) : (
-                  devicesData.data.docs.map((device) => (
-                    <MenuItem key={device._id} value={device._id}>
-                      {device.name}
-                    </MenuItem>
-                  ))
-                )}
-              </TextField> */}
 
               {/* Submit_Form_Button */}
               <Button
