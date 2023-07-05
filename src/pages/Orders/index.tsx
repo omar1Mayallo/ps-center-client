@@ -35,7 +35,7 @@ export default function Orders() {
         >
           Add New
         </Button>
-        {isOwner && (
+        {isOwner && data && data.data.docs.length > 0 && (
           <Button
             variant="outlined"
             color="error"

@@ -32,12 +32,7 @@ export default function OrderCard({item}: {item: Order}) {
           <Chip label={item._id} color={"default"} size="small" />
           <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
             {item.type === OrderTypes.IN_DEVICE && (
-              <Chip
-                label={"Device"}
-                color={"primary"}
-                size="small"
-                sx={{fontSize: "10px"}}
-              />
+              <Chip label={"Device"} color={"primary"} size="small" />
             )}
 
             {isLoading ? (
@@ -82,7 +77,6 @@ export default function OrderCard({item}: {item: Order}) {
             />
             <Chip
               label={item.status}
-              sx={{fontSize: "10px"}}
               color={item.status === OrderStatus.DONE ? "default" : "success"}
               size="small"
             />

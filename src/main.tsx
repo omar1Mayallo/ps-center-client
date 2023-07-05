@@ -15,6 +15,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider
+        anchorOrigin={{horizontal: "right", vertical: "top"}}
         preventDuplicate
         autoHideDuration={3000}
         maxSnack={3}

@@ -14,6 +14,8 @@ import EditSnack from "../pages/Snacks/pages/EditSnack";
 import Users from "../pages/Users";
 import {UserRoles} from "../shared/types/entities/User";
 import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
+import EditDevice from "../pages/Devices/pages/EditDevice";
+import CreateDevice from "../pages/Devices/pages/CreateDevice";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -44,6 +46,18 @@ const router = createBrowserRouter([
                     children: [
                       {path: ":snackId/edit", element: <EditSnack />},
                       {path: "create", element: <CreateSnack />},
+                    ],
+                  },
+                ],
+              },
+              {
+                path: "devices",
+                children: [
+                  {
+                    element: <PrivateRoutes userRole={UserRoles.OWNER} />,
+                    children: [
+                      {path: ":deviceId/edit", element: <EditDevice />},
+                      {path: "create", element: <CreateDevice />},
                     ],
                   },
                 ],

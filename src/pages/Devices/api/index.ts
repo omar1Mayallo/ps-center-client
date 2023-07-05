@@ -6,10 +6,11 @@ import {
   postData,
   putData,
 } from "../../../api/APIMethods";
-import {GetAllResI} from "../../../shared/types/APITypes";
+import {GetAllResI, GetOneResI} from "../../../shared/types/APITypes";
 import Device from "../../../shared/types/entities/Device";
 import {EditSessionTypeData} from "../services/editDeviceSessionType";
 import {useNavigate} from "react-router-dom";
+import {EditDeviceFormData} from "../validation/useEditDeviceFormData";
 
 const useDevicesAPIs = () => {
   const navigate = useNavigate();
@@ -59,17 +60,33 @@ const useDevicesAPIs = () => {
       enqueueSnackbar("Devices Reset Successfully", {variant: "success"});
   }
 
-  // CREATE_DEVICE
-
-  // GET_DEVICE
-
-  // UPDATE_DEVICE
-
   // DELETE_DEVICE
   async function deleteDevice(id: string) {
     const res = await deleteData(`/devices/${id}`);
     if (res.status === 204) {
       enqueueSnackbar("Successfully deleted", {variant: "success"});
+      navigate("/");
+    }
+  }
+
+  // GET_DEVICE
+  async function getDevice(id: string) {
+    const res = await getData<GetOneResI<Device>>(`/devices/${id}`);
+    return res;
+  }
+
+  // EDIT_DEVICE
+  async function editDevice(id: string, data: EditDeviceFormData) {
+    const res = await putData(`/devices/${id}`, data);
+    if (res.status === 200)
+      enqueueSnackbar("Successfully Edited", {variant: "success"});
+  }
+
+  // CREATE_DEVICE
+  async function createDevice(data: EditDeviceFormData) {
+    const res = await postData(`/devices`, data);
+    if (res.status === 201) {
+      enqueueSnackbar("Successfully Created", {variant: "success"});
       navigate("/");
     }
   }
@@ -82,6 +99,9 @@ const useDevicesAPIs = () => {
     resetDevice,
     resetAllDevices,
     deleteDevice,
+    getDevice,
+    editDevice,
+    createDevice,
   };
 };
 

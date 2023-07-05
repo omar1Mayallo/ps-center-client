@@ -24,7 +24,7 @@ import useStartTime from "../services/startTime";
 import useEndTime from "../services/endTime";
 import useResetDevice from "../services/resetDevice";
 import useDeleteDevice from "../services/deleteDevice";
-
+import EditIcon from "@mui/icons-material/Edit";
 export default function DeviceItem({item}: {item: Device}) {
   const navigate = useNavigate();
   const {isOwner, isUser} = useUserRole();
@@ -61,7 +61,6 @@ export default function DeviceItem({item}: {item: Device}) {
         sx={{
           display: "flex",
           flexDirection: "column",
-
           gap:
             isUser && item.startTime
               ? 2
@@ -74,7 +73,7 @@ export default function DeviceItem({item}: {item: Device}) {
               : 3.8,
         }}
       >
-        {/* NAME / TYPE / DELETE_ICON*/}
+        {/* NAME / TYPE / DELETE&EDIT_ICON*/}
         <Stack
           direction={"row"}
           alignItems={"center"}
@@ -93,15 +92,27 @@ export default function DeviceItem({item}: {item: Device}) {
             (isDeleteLoading ? (
               <CircularProgress size={20} color="error" />
             ) : (
-              <IconButton
-                aria-label="delete"
-                color="error"
-                onClick={() => {
-                  mutateDelete(item._id);
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
+              <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
+                <IconButton
+                  aria-label="edit"
+                  color="success"
+                  onClick={() => {
+                    navigate(`/devices/${item._id}/edit`);
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+
+                <IconButton
+                  aria-label="delete"
+                  color="error"
+                  onClick={() => {
+                    mutateDelete(item._id);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
             ))}
         </Stack>
 

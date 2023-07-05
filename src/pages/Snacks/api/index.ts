@@ -4,6 +4,7 @@ import Snack from "../../../shared/types/entities/Snack";
 import {GetAllResI, GetOneResI} from "../../../shared/types/APITypes";
 import {EditSnackFormData} from "../validation/useEditSnackFormData";
 import {useNavigate} from "react-router-dom";
+import {CreateSnackFormData} from "../validation/useCreateSnackFormData";
 
 const useSnacksAPIs = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const useSnacksAPIs = () => {
   }
 
   // CREATE_SNACK
-  async function createSnack(data: EditSnackFormData) {
+  async function createSnack(data: CreateSnackFormData) {
     const res = await postData(`/snacks`, data);
     if (res.status === 201) {
       enqueueSnackbar("Successfully Created", {variant: "success"});
