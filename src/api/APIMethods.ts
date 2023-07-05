@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Cookies from "js-cookie";
 import api from ".";
+import {AxiosRequestConfig} from "axios";
 
-export async function getData<TRes>(url: string) {
+export async function getData<TRes>(url: string, config?: AxiosRequestConfig) {
   const res = await api.get<TRes>(url, {
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
     },
+    ...config,
   });
   return res.data;
 }

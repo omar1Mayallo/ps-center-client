@@ -13,8 +13,13 @@ import {CreateOrderFormData} from "../validation/useCreateOrderFormData";
 const useOrdersAPIs = () => {
   const navigate = useNavigate();
   // GET_ALL_ORDERS
-  async function getAllOrders() {
-    const res = await getData<GetAllResI<Order>>("/orders");
+  async function getAllOrders(pageParam: number, limit: number) {
+    const res = await getData<GetAllResI<Order>>("/orders", {
+      params: {
+        page: pageParam,
+        limit,
+      },
+    });
     return res;
   }
 
@@ -50,10 +55,7 @@ const useOrdersAPIs = () => {
   }
 
   // ADD_SNACK_TO_ORDER
-  async function addSnackToOrder(
-    id: string,
-    data: any /*CreateOrderFormData*/
-  ) {
+  async function addSnackToOrder(id: string, data: CreateOrderFormData) {
     const res = await patchData(`/orders/${id}/add-item`, data);
     if (res.status === 200) {
       enqueueSnackbar("Successfully Edited", {variant: "success"});
