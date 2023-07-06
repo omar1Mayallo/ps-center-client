@@ -72,7 +72,7 @@ export default function SessionItem({item}: {item: Session}) {
             />
             <Chip
               label={`Total Price: ${item.sessionPrice} $`}
-              color={"secondary"}
+              color={"error"}
               size="small"
             />
           </Box>

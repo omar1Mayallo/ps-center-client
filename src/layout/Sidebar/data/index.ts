@@ -1,5 +1,5 @@
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import DevicesIcon from "@mui/icons-material/Devices";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import TapasIcon from "@mui/icons-material/Tapas";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
@@ -32,9 +32,9 @@ export const navItems: NavItem[] = [
     navUrl: "/snacks",
   },
   {
-    navItem: "Users",
-    NavIcon: PeopleAltIcon,
-    navUrl: "/users",
-    isAuthorizedTo: [UserRoles.ADMIN, UserRoles.OWNER],
+    navItem: "Dashboard",
+    NavIcon: DashboardIcon,
+    navUrl: "/dashboard",
+    isAuthorizedTo: [UserRoles.OWNER],
   },
 ];

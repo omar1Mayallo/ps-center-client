@@ -3,7 +3,10 @@ import Layout from "../layout";
 import NotFound from "../pages/404";
 import Login from "../pages/Auth/pages/Login";
 import Register from "../pages/Auth/pages/Register";
+import Dashboard from "../pages/Dashboard";
 import Devices from "../pages/Devices";
+import CreateDevice from "../pages/Devices/pages/CreateDevice";
+import EditDevice from "../pages/Devices/pages/EditDevice";
 import Orders from "../pages/Orders";
 import CreateOrder from "../pages/Orders/pages/CreateOrder";
 import EditOrder from "../pages/Orders/pages/EditOrder";
@@ -11,11 +14,8 @@ import Sessions from "../pages/Sessions";
 import Snacks from "../pages/Snacks";
 import CreateSnack from "../pages/Snacks/pages/CreateSnack";
 import EditSnack from "../pages/Snacks/pages/EditSnack";
-import Users from "../pages/Users";
 import {UserRoles} from "../shared/types/entities/User";
 import {AuthRoutes, PrivateRoutes} from "./AuthRoutes";
-import EditDevice from "../pages/Devices/pages/EditDevice";
-import CreateDevice from "../pages/Devices/pages/CreateDevice";
 
 const router = createBrowserRouter([
   {path: "/login", element: <Login />},
@@ -71,7 +71,11 @@ const router = createBrowserRouter([
                 ],
               },
               {path: "sessions", element: <Sessions />},
-              {path: "users", element: <Users />},
+              {
+                path: "dashboard",
+                element: <PrivateRoutes userRole={UserRoles.OWNER} />,
+                children: [{index: true, element: <Dashboard />}],
+              },
             ],
           },
         ],
