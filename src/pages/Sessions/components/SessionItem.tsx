@@ -19,8 +19,6 @@ export default function SessionItem({item}: {item: Session}) {
   // DELETE_SESSION_HANDLER
   const {mutate, isLoading} = useDeleteSession();
 
-  console.log(item);
-
   return (
     <Card elevation={2}>
       <CardContent sx={{display: "flex", flexDirection: "column", gap: 1.5}}>

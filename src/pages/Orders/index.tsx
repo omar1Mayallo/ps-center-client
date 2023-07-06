@@ -22,7 +22,6 @@ export default function Orders() {
     isFetchingNextPage,
     hasNextPage,
   } = useGetAllOrders();
-  console.log(data);
 
   const dataExist = data && data?.pages[0].data.docs.length > 0;
 

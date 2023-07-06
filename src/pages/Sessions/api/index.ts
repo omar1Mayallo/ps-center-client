@@ -7,8 +7,13 @@ import Session from "../../../shared/types/entities/Session";
 const useSessionsAPIs = () => {
   const navigate = useNavigate();
   // GET_ALL_SESSIONS
-  async function getAllSessions() {
-    const res = await getData<GetAllResI<Session>>("/game-sessions");
+  async function getAllSessions(pageParam: number, limit: number) {
+    const res = await getData<GetAllResI<Session>>("/game-sessions", {
+      params: {
+        page: pageParam,
+        limit,
+      },
+    });
     return res;
   }
 

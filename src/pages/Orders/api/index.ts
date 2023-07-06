@@ -18,6 +18,7 @@ const useOrdersAPIs = () => {
       params: {
         page: pageParam,
         limit,
+        sort: "-status,-createdAt",
       },
     });
     return res;
