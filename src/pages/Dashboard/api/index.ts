@@ -18,21 +18,16 @@ export interface PercentageResI<T> {
 }
 
 // MONTHLY_PROFITS_TYPES
-export interface OrderTypesProfitItem {
+
+export interface ProfitItem {
   _id: {
     month: number;
     year: number;
-    type: OrderTypes;
+    type?: OrderTypes;
   };
   value: number;
 }
-export interface SessionProfitItem {
-  _id: {
-    month: number;
-    year: number;
-  };
-  value: number;
-}
+
 export interface ProfitsI<T> {
   status: string;
   data: {
@@ -43,9 +38,7 @@ export interface ProfitsI<T> {
 const useDashboardAPIs = () => {
   // GET_ORDERS_MONTHLY_PROFITS
   async function getOrdersMonthlyProfits() {
-    const res = await getData<ProfitsI<OrderTypesProfitItem>>(
-      "/orders/monthly-profits"
-    );
+    const res = await getData<ProfitsI<ProfitItem>>("/orders/monthly-profits");
     return res;
   }
 
@@ -59,7 +52,7 @@ const useDashboardAPIs = () => {
 
   // GET_SESSIONS_MONTHLY_PROFITS
   async function getSessionsMonthlyProfits() {
-    const res = await getData<ProfitsI<SessionProfitItem>>(
+    const res = await getData<ProfitsI<ProfitItem>>(
       "/game-sessions/monthly-profits"
     );
     return res;
