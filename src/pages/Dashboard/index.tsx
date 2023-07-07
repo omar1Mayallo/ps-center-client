@@ -1,8 +1,16 @@
-import {Box, Card, Grid} from "@mui/material";
+import {
+  Alert,
+  Box,
+  Card,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import Head from "../../shared/components/Head";
 import {OrderTypesPercentageItem, SessionTypesPercentageItem} from "./api";
 import VerticalBarChart from "./components/BarChart";
 import PieChart from "./components/PieChart";
+import {useGetDocsCount} from "./services/getDocsCount";
 import {
   useGetOrdersMonthlyProfit,
   useGetSessionsMonthlyProfit,
@@ -37,24 +45,66 @@ export default function Dashboard() {
     error: sessionMonthlyErr,
   } = useGetSessionsMonthlyProfit();
 
+  // DOCS_COUNT
+  const {
+    data: docsCountData,
+    isLoading: docsCountLoading,
+    error: docsCountErr,
+  } = useGetDocsCount();
+
+  // !NOTE This is not the best practice to handle loading and error handling
   if (
     ordTypesLoading ||
     sessionTypesLoading ||
     ordMonthlyLoading ||
-    sessionMonthlyLoading
+    sessionMonthlyLoading ||
+    docsCountLoading
   ) {
-    return <h1>ordTypesLoading</h1>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  if (ordTypesErr || sessionTypesErr || ordMonthlyErr || sessionMonthlyErr) {
-    return <h1>Error</h1>;
+  if (
+    ordTypesErr ||
+    sessionTypesErr ||
+    ordMonthlyErr ||
+    sessionMonthlyErr ||
+    docsCountErr
+  ) {
+    return <Alert color="error">Fail To Load Statics</Alert>;
   }
-  console.log(ordMonthlyData);
 
-  // SessionProfitItem
   return (
     <Box>
       <Head h="Dashboard" />
+      <Grid container spacing={2} columns={20} textAlign={"center"}>
+        {Object.entries(docsCountData.data).map(([key, value]) => (
+          <Grid key={key} item xs={20} sm={10} md={5} lg={4}>
+            <Box
+              sx={{
+                backgroundColor: "#2196f3",
+                borderRadius: 2,
+                my: 2,
+              }}
+            >
+              <Typography variant="h6">
+                {value} {key.toUpperCase()}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Card
@@ -102,6 +152,7 @@ export default function Dashboard() {
             <VerticalBarChart dataProfits={ordMonthlyData} />
           </Card>
         </Grid>
+
         <Grid item xs={12} md={4}>
           <Card
             elevation={1}

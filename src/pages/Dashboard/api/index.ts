@@ -18,7 +18,6 @@ export interface PercentageResI<T> {
 }
 
 // MONTHLY_PROFITS_TYPES
-
 export interface ProfitItem {
   _id: {
     month: number;
@@ -27,11 +26,22 @@ export interface ProfitItem {
   };
   value: number;
 }
-
 export interface ProfitsI<T> {
   status: string;
   data: {
     profits: T[];
+  };
+}
+
+// DOCS_COUNT_TYPE
+export interface DocsCountI {
+  status: string;
+  data: {
+    orders: number;
+    sessions: number;
+    devices: number;
+    snacks: number;
+    users: number;
   };
 }
 
@@ -66,11 +76,18 @@ const useDashboardAPIs = () => {
     return res;
   }
 
+  // GET_DOCS_COUNT
+  async function getDocsCount() {
+    const res = await getData<DocsCountI>("/docs-count");
+    return res;
+  }
+
   return {
     getOrdersMonthlyProfits,
     getSessionsMonthlyProfits,
     getSessionsTypesPercentages,
     getOrderTypesPercentages,
+    getDocsCount,
   };
 };
 
